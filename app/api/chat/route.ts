@@ -1,6 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { ZodError } from 'zod';
-import { TaskType } from '@google/generative-ai';
 import { chatPostSchema, formatChatErrors } from '@/lib/chat/schema';
 import {
   buildPromptWithContext,
@@ -13,7 +12,7 @@ import type {
   Citation,
   DocumentSource,
 } from '@/lib/chat/types';
-import { gemini, GEMINI_EMBEDDING_MODEL } from '@/lib/gemini/client';
+import { GEMINI_EMBEDDING_MODEL } from '@/lib/gemini/client';
 import { SYSTEM_PROMPT } from '@/lib/gemini/system-prompt';
 import { gateway } from '@/lib/gateway/client';
 import { createServiceClient } from '@/lib/supabase/server';
@@ -109,13 +108,33 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // 3. Embed da pergunta (Gemini SDK direto — Gateway não tem endpoint de embedding)
-  const embedModel = gemini.getGenerativeModel({ model: GEMINI_EMBEDDING_MODEL });
-  const embedResult = await embedModel.embedContent({
-    content: { role: 'user', parts: [{ text: input.message }] },
-    taskType: TaskType.RETRIEVAL_QUERY,
-  });
-  const queryEmbedding = embedResult.embedding.values;
+  // 3. Embed da pergunta — REST direto (SDK 0.21 não expõe outputDimensionality)
+  const embedRes = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_EMBEDDING_MODEL}:embedContent?key=${process.env.GEMINI_API_KEY}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        content: { parts: [{ text: input.message }] },
+        taskType: 'RETRIEVAL_QUERY',
+        outputDimensionality: 768,
+      }),
+    },
+  );
+  if (!embedRes.ok) {
+    return errorResponse(
+      { error: 'llm_failed', detail: 'Embedding falhou.' },
+      502,
+    );
+  }
+  const embedData = (await embedRes.json()) as { embedding?: { values?: number[] } };
+  const queryEmbedding = embedData.embedding?.values;
+  if (!queryEmbedding) {
+    return errorResponse(
+      { error: 'llm_failed', detail: 'Embedding sem valores.' },
+      502,
+    );
+  }
 
   // 4. Match chunks
   const supabase = createServiceClient();

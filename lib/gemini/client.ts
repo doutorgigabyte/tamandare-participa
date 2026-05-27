@@ -26,4 +26,5 @@ if (!process.env.GEMINI_API_KEY) {
 export const gemini = new GoogleGenerativeAI(process.env.GEMINI_API_KEY ?? '');
 
 export const GEMINI_CHAT_MODEL = 'gemini-2.5-flash';
-export const GEMINI_EMBEDDING_MODEL = 'text-embedding-004';
+export const GEMINI_EMBEDDING_MODEL = 'gemini-embedding-001';
+export const GEMINI_EMBEDDING_DIM = 768;

@@ -45,7 +45,7 @@ const CHUNK_OVERLAP_TOKENS = 100;
 const CHUNK_TARGET_CHARS = CHUNK_TARGET_TOKENS * CHARS_PER_TOKEN;
 const CHUNK_OVERLAP_CHARS = CHUNK_OVERLAP_TOKENS * CHARS_PER_TOKEN;
 
-const EMBEDDING_MODEL = 'text-embedding-004';
+const EMBEDDING_MODEL = 'gemini-embedding-001';
 const EMBEDDING_DIM = 768;
 
 // ---------------------------------------------------------------------------
@@ -238,18 +238,26 @@ function chunkMarkdown(meta: Frontmatter, content: string): Chunk[] {
 // ---------------------------------------------------------------------------
 
 async function embedAll(chunks: Chunk[], apiKey: string): Promise<number[][]> {
-  const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({ model: EMBEDDING_MODEL });
+  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${EMBEDDING_MODEL}:embedContent?key=${apiKey}`;
   const out: number[][] = [];
   for (let i = 0; i < chunks.length; i++) {
     const c = chunks[i];
     const title = String(c.metadata.title ?? '');
-    const result = await model.embedContent({
-      content: { role: 'user', parts: [{ text: c.content }] },
-      taskType: TaskType.RETRIEVAL_DOCUMENT,
-      title,
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        content: { parts: [{ text: c.content }] },
+        taskType: 'RETRIEVAL_DOCUMENT',
+        title,
+        outputDimensionality: EMBEDDING_DIM,
+      }),
     });
-    const vec = result.embedding.values;
+    if (!res.ok) {
+      throw new Error(`embed http ${res.status}: ${(await res.text()).slice(0, 200)}`);
+    }
+    const data = await res.json();
+    const vec = data.embedding?.values;
     if (!vec || vec.length !== EMBEDDING_DIM) {
       throw new Error(
         `embedding dimension mismatch on chunk ${i}: got ${vec?.length}, expected ${EMBEDDING_DIM}`,
@@ -257,7 +265,7 @@ async function embedAll(chunks: Chunk[], apiKey: string): Promise<number[][]> {
     }
     out.push(vec);
     process.stdout.write('.');
-    // Pacing leve pra ficar bem abaixo do limite (1500 RPM no free tier)
+    // Pacing leve (free tier: 1500 RPM)
     if ((i + 1) % 50 === 0) await new Promise((r) => setTimeout(r, 250));
   }
   process.stdout.write('\n');
