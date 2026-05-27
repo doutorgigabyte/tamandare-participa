@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Tema escuro por padrão — PRD v1.0 §8.1.
+ *   background: #0A0A0B   (off-black)
+ *   cards:      #15151A   (glass + blur 12px)
+ *   primary:    #00D9FF   (cian elétrico)
+ *   secondary:  #FF6B35   (laranja terracota)
+ */
+
+@layer base {
+  :root {
+    /* Mantém um light theme stub caso alguém toggle no futuro. */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 4%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 4%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 4%;
+    --primary: 188 100% 50%;
+    --primary-foreground: 240 10% 4%;
+    --secondary: 16 100% 60%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;
+    --accent: 240 5% 96%;
+    --accent-foreground: 240 6% 10%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
+    --ring: 188 100% 50%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    /* #0A0A0B → HSL aproximado */
+    --background: 240 6% 4%;
+    --foreground: 0 0% 98%;
+    /* #15151A */
+    --card: 240 8% 9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 8% 9%;
+    --popover-foreground: 0 0% 98%;
+    /* #00D9FF */
+    --primary: 189 100% 50%;
+    --primary-foreground: 240 10% 4%;
+    /* #FF6B35 */
+    --secondary: 16 100% 60%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 240 5% 14%;
+    --muted-foreground: 240 5% 65%;
+    --accent: 240 5% 14%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5% 18%;
+    --input: 240 5% 18%;
+    --ring: 189 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+}

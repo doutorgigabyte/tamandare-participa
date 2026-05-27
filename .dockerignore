@@ -1,0 +1,48 @@
+# =============================================================================
+# .dockerignore — exclui artefatos pesados/sensíveis do contexto de build
+# =============================================================================
+
+# Node
+node_modules
+npm-debug.log
+
+# Next.js
+.next
+out
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.vscode
+.idea
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Env (NUNCA copiar pra imagem — vão por Coolify env vars)
+.env
+.env*.local
+.secrets
+
+# Raw PDF + extração intermediária (grande, não necessário em runtime — já
+# está consolidado em db/seed/macroareas.example.json + docs/sources/*.md)
+docs/raw
+
+# Coverage / testes
+coverage
+.nyc_output
+
+# Documentação (não usado em runtime)
+README.md
+
+# Backup
+*.bak
+*~

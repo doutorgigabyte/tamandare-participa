@@ -1,0 +1,67 @@
+{
+  "_comment": "Pontos de identidade turística de Tamandaré com contagens de fotos georreferenciadas. Extraído de docs/sources/caderno/05-indicador-vegetacao-patrimonio.md (pág. 49 do Caderno ICR — análise via API do Flickr maio/2025). Coordenadas geocodificadas independentemente (sem outreach). Comparativos com outras cidades estão na fonte.",
+  "_source": "Caderno ICR p. 49 (Análise via API Flickr, maio/2025) + geocoding manual",
+  "_extracted_at": "2026-05-27",
+  "pois": [
+    {
+      "id": "praia-pontal",
+      "name": "Praia do Pontal",
+      "category": "praia",
+      "lat": -8.7455,
+      "lng": -35.0994,
+      "photo_count": 239,
+      "rank_brasil_context": "Compete com Praia do Campeche, Florianópolis (160 fotos)",
+      "note": "Maior concentração fotográfica do município — coração da identidade turística"
+    },
+    {
+      "id": "igreja-carneiros",
+      "name": "Entorno da Igreja de Carneiros",
+      "category": "patrimonio",
+      "lat": -8.6953602,
+      "lng": -35.0903347,
+      "photo_count": 102,
+      "rank_brasil_context": "Segundo ponto mais fotografado do município",
+      "note": "Construção histórica em frente à Praia dos Carneiros — postal turístico nacional",
+      "osm_id": 432639690
+    },
+    {
+      "id": "praia-folia-reveillon",
+      "name": "Praia da Folia (Reveillon dos Carneiros)",
+      "category": "evento",
+      "lat": -8.7125,
+      "lng": -35.086,
+      "photo_count": 80,
+      "rank_brasil_context": "Concentração sazonal — pico em dezembro/janeiro",
+      "note": "Local da festa de Réveillon dos Carneiros; alta concentração de fotos no período"
+    },
+    {
+      "id": "forte-santo-inacio",
+      "name": "Forte de Santo Inácio de Loyola",
+      "category": "patrimonio",
+      "lat": -8.7576457,
+      "lng": -35.0992225,
+      "photo_count": 51,
+      "rank_brasil_context": "Patrimônio histórico-militar — sub-utilizado turisticamente",
+      "note": "Construído pelos holandeses no séc. XVII. Potencial não totalmente explorado",
+      "osm_id": 608756634
+    },
+    {
+      "id": "centro-tamandare",
+      "name": "Centro de Tamandaré",
+      "category": "centro-urbano",
+      "lat": -8.7556,
+      "lng": -35.1031,
+      "photo_count": 23,
+      "rank_brasil_context": "10× menos fotos que o Pontal — disparidade central da pauta turística",
+      "note": "Inclui Igreja de São Benedito; identidade central pouco explorada pelo turismo atual"
+    }
+  ],
+  "summary": {
+    "total_pois": 5,
+    "total_photos": 495,
+    "leader": "Praia do Pontal (239 fotos = 48% do total)",
+    "disparity_pontal_centro": "10.4×",
+    "policy_implication": "Plano Diretor pode criar restrições de altura no entorno do Forte e Igrejas pra dar protagonismo ao patrimônio + políticas pra atrair turismo pro Centro"
+  },
+  "_osm_verified_at": "2026-05-27"
+}
