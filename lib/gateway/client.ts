@@ -241,13 +241,40 @@ async function geocodeViaSDK(address: string): Promise<GeocodeResult[]> {
   }));
 }
 
+// Shape do retorno do Gateway pra maps.geocode (objeto único, não array):
+//   data: { lat, lng, formattedAddress, placeId, raw }
+// Shape pra maps.reverse-geocode (objeto com array de results crus do Google):
+//   data: { formattedAddress, results: [{ geometry.location.{lat,lng}, formatted_address, place_id, ... }] }
+type GatewayGeocodeData = {
+  lat: number;
+  lng: number;
+  formattedAddress?: string;
+  placeId?: string;
+};
+
+type GoogleMapsResultRaw = {
+  geometry?: { location?: { lat: number; lng: number } };
+  formatted_address?: string;
+  place_id?: string;
+};
+
+type GatewayReverseGeocodeData = {
+  formattedAddress?: string;
+  results?: GoogleMapsResultRaw[];
+};
+
 export async function mapsGeocode(address: string): Promise<GeocodeResult[]> {
   if (isGatewayConfigured()) {
     try {
-      const r = await callGateway<{ results: GeocodeResult[] }>('maps', 'geocode', { address });
-      if (r.success && r.data?.results) {
+      const r = await callGateway<GatewayGeocodeData>('maps', 'geocode', { address });
+      if (r.success && r.data && typeof r.data.lat === 'number' && typeof r.data.lng === 'number') {
         gatewayLog('maps', 'geocode', 'ok', `${r.latencyMs}ms`);
-        return r.data.results;
+        return [{
+          lat: r.data.lat,
+          lng: r.data.lng,
+          formatted_address: r.data.formattedAddress,
+          place_id: r.data.placeId,
+        }];
       }
       gatewayLog('maps', 'geocode', 'fallback', r.error ?? 'success=false');
     } catch (err) {
@@ -286,10 +313,20 @@ async function reverseGeocodeViaSDK(lat: number, lng: number): Promise<GeocodeRe
 export async function mapsReverseGeocode(lat: number, lng: number): Promise<GeocodeResult[]> {
   if (isGatewayConfigured()) {
     try {
-      const r = await callGateway<{ results: GeocodeResult[] }>('maps', 'reverse-geocode', { lat, lng });
-      if (r.success && r.data?.results) {
+      const r = await callGateway<GatewayReverseGeocodeData>('maps', 'reverse-geocode', { lat, lng });
+      if (r.success && r.data?.results && r.data.results.length > 0) {
         gatewayLog('maps', 'reverse-geocode', 'ok', `${r.latencyMs}ms`);
-        return r.data.results;
+        return r.data.results
+          .filter((item): item is GoogleMapsResultRaw & { geometry: { location: { lat: number; lng: number } } } =>
+            typeof item.geometry?.location?.lat === 'number'
+            && typeof item.geometry.location.lng === 'number',
+          )
+          .map((item) => ({
+            lat: item.geometry.location.lat,
+            lng: item.geometry.location.lng,
+            formatted_address: item.formatted_address,
+            place_id: item.place_id,
+          }));
       }
       gatewayLog('maps', 'reverse-geocode', 'fallback', r.error ?? 'success=false');
     } catch (err) {
