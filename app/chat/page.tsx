@@ -11,7 +11,7 @@ export default function ChatPage() {
     <main className="container mx-auto flex max-w-3xl flex-col gap-6 px-4 py-8">
       <header>
         <h1 className="text-3xl font-bold tracking-tight">Chat com a IA</h1>
-        <p className="mt-2 text-sm text-zinc-400">
+        <p className="mt-2 text-sm text-muted-foreground">
           Tire dúvidas sobre a revisão do Plano Diretor. Cada resposta cita as
           páginas exatas dos documentos oficiais.
         </p>

@@ -9,14 +9,14 @@ export const metadata = {
 };
 
 const COLOR_BG: Record<IndicadorColor, string> = {
-  red: 'border-red-900/50 bg-red-950/30',
+  red: 'border-red-900/50 bg-atlantico-terracota-clara/20',
   amber: 'border-amber-900/50 bg-amber-950/30',
   green: 'border-emerald-900/50 bg-emerald-950/30',
   blue: 'border-sky-900/50 bg-sky-950/30',
 };
 
 const COLOR_NUMBER: Record<IndicadorColor, string> = {
-  red: 'text-red-400',
+  red: 'text-atlantico-terracota',
   amber: 'text-amber-400',
   green: 'text-emerald-400',
   blue: 'text-sky-400',
@@ -26,13 +26,13 @@ export default function DiagnosticoIndex() {
   return (
     <main className="container mx-auto max-w-5xl px-4 py-12">
       <header className="mb-10 max-w-3xl">
-        <p className="text-sm uppercase tracking-wide text-zinc-500">
+        <p className="text-sm uppercase tracking-wide text-muted-foreground">
           Diagnóstico — Instituto Cidades Responsivas
         </p>
         <h1 className="mt-2 text-4xl font-bold tracking-tight">
           Como Tamandaré se compara com o Brasil
         </h1>
-        <p className="mt-4 text-base text-zinc-300">
+        <p className="mt-4 text-base text-foreground/90">
           Cinco indicadores calculados pelo Instituto Cidades Responsivas com
           dados de Censo, Ministério do Trabalho, Landsat 8 e API do Flickr.
           Cada um deles ajuda a entender uma decisão diferente do novo Plano
@@ -48,7 +48,7 @@ export default function DiagnosticoIndex() {
             href={`/diagnostico/${ind.slug}`}
             className={`group rounded-xl border ${COLOR_BG[ind.color]} p-6 transition-all hover:scale-[1.01] hover:shadow-lg`}
           >
-            <div className="mb-3 text-xs uppercase tracking-wide text-zinc-400">
+            <div className="mb-3 text-xs uppercase tracking-wide text-muted-foreground">
               {ind.short_title}
             </div>
             <div className="mb-2 flex items-baseline gap-2">
@@ -58,12 +58,12 @@ export default function DiagnosticoIndex() {
                 {ind.big_number}
               </span>
               {ind.big_number_unit && (
-                <span className="text-sm text-zinc-500">{ind.big_number_unit}</span>
+                <span className="text-sm text-muted-foreground">{ind.big_number_unit}</span>
               )}
             </div>
-            <h2 className="text-lg font-semibold text-zinc-100">{ind.title}</h2>
-            <p className="mt-1 text-sm text-zinc-400">{ind.subtitle}</p>
-            <p className="mt-3 text-xs text-zinc-500">{ind.ranking_label}</p>
+            <h2 className="text-lg font-semibold text-foreground">{ind.title}</h2>
+            <p className="mt-1 text-sm text-muted-foreground">{ind.subtitle}</p>
+            <p className="mt-3 text-xs text-muted-foreground">{ind.ranking_label}</p>
             <div className="mt-4 inline-flex items-center gap-1 text-sm text-primary transition-opacity group-hover:opacity-100">
               Ver detalhe e contribuir
               <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
@@ -72,7 +72,7 @@ export default function DiagnosticoIndex() {
         ))}
       </div>
 
-      <footer className="mt-10 border-t border-zinc-800 pt-6 text-xs text-zinc-500">
+      <footer className="mt-10 border-t border-border pt-6 text-xs text-muted-foreground">
         Fonte: Caderno &quot;Análise Preliminar do Plano Diretor municipal de
         Tamandaré/PE&quot; — Instituto Cidades Responsivas (2026). Páginas 26-52.
       </footer>

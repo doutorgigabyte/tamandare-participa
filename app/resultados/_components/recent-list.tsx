@@ -20,7 +20,7 @@ type Props = {
 export function RecentList({ items }: Props) {
   if (items.length === 0) {
     return (
-      <section className="rounded-xl border border-zinc-800 bg-zinc-950/50 p-6 text-sm text-zinc-500">
+      <section className="rounded-xl border border-border bg-muted/40 p-6 text-sm text-muted-foreground">
         Nenhuma contribuição publicada ainda.
       </section>
     );
@@ -28,7 +28,7 @@ export function RecentList({ items }: Props) {
 
   return (
     <section>
-      <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-zinc-400">
+      <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
         Contribuições recentes
       </h2>
       <div className="flex flex-col gap-3">
@@ -45,18 +45,18 @@ export function RecentList({ items }: Props) {
           return (
             <article
               key={c.id}
-              className="rounded-lg border border-zinc-800 bg-zinc-950/50 p-4"
+              className="rounded-lg border border-border bg-muted/40 p-4"
             >
               <header className="mb-2 flex flex-wrap items-center gap-2 text-xs">
                 {cat && (
-                  <span className="inline-flex items-center gap-1 rounded-full border border-zinc-800 bg-zinc-900 px-2 py-0.5 text-zinc-300">
+                  <span className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-2 py-0.5 text-foreground/90">
                     {Icon && <Icon className="h-3 w-3" aria-hidden />}
                     {cat.label}
                   </span>
                 )}
                 {macro && (
                   <span
-                    className="inline-flex items-center gap-1 rounded-full border border-zinc-800 px-2 py-0.5 text-zinc-300"
+                    className="inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-foreground/90"
                     style={{
                       backgroundColor: `${macro.display_color}22`,
                       borderColor: `${macro.display_color}55`,
@@ -75,9 +75,9 @@ export function RecentList({ items }: Props) {
                     Em moderação
                   </span>
                 )}
-                <span className="ml-auto text-zinc-500">{timeAgo(c.created_at)}</span>
+                <span className="ml-auto text-muted-foreground">{timeAgo(c.created_at)}</span>
               </header>
-              <p className="text-sm leading-relaxed text-zinc-200 whitespace-pre-wrap">
+              <p className="text-sm leading-relaxed text-foreground whitespace-pre-wrap">
                 {snippet}
               </p>
             </article>

@@ -39,19 +39,19 @@ export function GlassPanel({ open, onClose, title, children, className }: Props)
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 28, stiffness: 260 }}
             className={cn(
-              'fixed right-0 top-0 z-50 h-full w-full max-w-md overflow-y-auto border-l border-zinc-800 bg-zinc-900/70 p-6 backdrop-blur-xl',
+              'fixed right-0 top-0 z-50 h-full w-full max-w-md overflow-y-auto border-l border-border bg-card/70 p-6 backdrop-blur-xl',
               className,
             )}
             role="dialog"
             aria-modal="true"
           >
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-zinc-100">
+              <h2 className="text-lg font-semibold text-foreground">
                 {title ?? ''}
               </h2>
               <button
                 onClick={onClose}
-                className="rounded-md p-1 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100"
+                className="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
                 aria-label="Fechar"
               >
                 <X className="h-5 w-5" />

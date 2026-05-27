@@ -3,62 +3,79 @@
 @tailwind utilities;
 
 /*
- * Tema escuro por padrão — PRD v1.0 §8.1.
- *   background: #0A0A0B   (off-black)
- *   cards:      #15151A   (glass + blur 12px)
- *   primary:    #00D9FF   (cian elétrico)
- *   secondary:  #FF6B35   (laranja terracota)
+ * Paleta "Atlântico Sul" — Tamandaré Participa
+ *
+ * Inspirada nas cores reais do município: mar verde-azulado raso, areia clara
+ * dos Carneiros, mata atlântica da Reserva de Saltinho, terracota colonial do
+ * Forte de Santo Inácio. Light theme acolhedor pra todo público.
+ *
+ *   areia-fundo      #FEF8EE   off-white quente (background)
+ *   areia-card       #FFFFFF   branco puro (cards)
+ *   mar-raso         #4DB6AC   cian-mar (primary, suave)
+ *   mar-profundo     #00838F   azul mais sério (hover, accents)
+ *   mata-atlantica   #2E7D32   verde-folha (success, "contribuir")
+ *   terracota        #C75B39   acento quente do Forte (destaques)
+ *   tinta            #1C2A33   texto principal (azul-noite quase preto)
+ *   neblina          #5B6B73   texto secundário
  */
 
 @layer base {
   :root {
-    /* Mantém um light theme stub caso alguém toggle no futuro. */
-    --background: 0 0% 100%;
-    --foreground: 240 10% 4%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 4%;
+    /* Áreas claras */
+    --background: 34 71% 96%;            /* #FEF8EE areia */
+    --foreground: 207 31% 15%;           /* #1C2A33 tinta */
+    --card: 0 0% 100%;                   /* #FFFFFF */
+    --card-foreground: 207 31% 15%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 4%;
-    --primary: 188 100% 50%;
-    --primary-foreground: 240 10% 4%;
-    --secondary: 16 100% 60%;
+    --popover-foreground: 207 31% 15%;
+
+    /* Mar raso = primary */
+    --primary: 174 41% 51%;              /* #4DB6AC */
+    --primary-foreground: 0 0% 100%;
+
+    /* Mar profundo = secondary (links, hover) */
+    --secondary: 187 100% 28%;           /* #00838F */
     --secondary-foreground: 0 0% 100%;
-    --muted: 240 5% 96%;
-    --muted-foreground: 240 4% 46%;
-    --accent: 240 5% 96%;
-    --accent-foreground: 240 6% 10%;
-    --destructive: 0 84% 60%;
+
+    /* Terracota = accent quente */
+    --accent: 15 56% 50%;                /* #C75B39 */
+    --accent-foreground: 0 0% 100%;
+
+    /* Tons neutros */
+    --muted: 34 35% 92%;                 /* areia mais clara pra blocos */
+    --muted-foreground: 200 11% 40%;     /* #5B6B73 neblina */
+    --border: 34 25% 88%;
+    --input: 34 25% 88%;
+    --ring: 174 41% 51%;                 /* mar raso */
+
+    --destructive: 0 65% 51%;
     --destructive-foreground: 0 0% 100%;
-    --border: 240 6% 90%;
-    --input: 240 6% 90%;
-    --ring: 188 100% 50%;
-    --radius: 0.75rem;
+
+    --radius: 1rem;                       /* 16px — orgânico */
   }
 
   .dark {
-    /* #0A0A0B → HSL aproximado */
-    --background: 240 6% 4%;
-    --foreground: 0 0% 98%;
-    /* #15151A */
-    --card: 240 8% 9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 8% 9%;
-    --popover-foreground: 0 0% 98%;
-    /* #00D9FF */
-    --primary: 189 100% 50%;
-    --primary-foreground: 240 10% 4%;
-    /* #FF6B35 */
-    --secondary: 16 100% 60%;
+    /* Stub dark theme — não usado por padrão. Se reativarem dark, fica baseado
+     * em azul-noite (#0A1822) em vez do antigo #0A0A0B cyberpunk. */
+    --background: 207 50% 8%;
+    --foreground: 34 50% 96%;
+    --card: 207 35% 12%;
+    --card-foreground: 34 50% 96%;
+    --popover: 207 35% 12%;
+    --popover-foreground: 34 50% 96%;
+    --primary: 174 41% 51%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 187 100% 35%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 240 5% 14%;
-    --muted-foreground: 240 5% 65%;
-    --accent: 240 5% 14%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 70% 50%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5% 18%;
-    --input: 240 5% 18%;
-    --ring: 189 100% 50%;
+    --accent: 15 56% 55%;
+    --accent-foreground: 0 0% 100%;
+    --muted: 207 30% 18%;
+    --muted-foreground: 207 15% 70%;
+    --border: 207 30% 22%;
+    --input: 207 30% 22%;
+    --ring: 174 41% 51%;
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 0 0% 100%;
   }
 }
 
@@ -68,6 +85,26 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: 'rlig' 1, 'calt' 1;
+    font-feature-settings: 'rlig' 1, 'calt' 1, 'ss01' 1;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display), Georgia, serif;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Utilitário: gradient suave da paleta praia pra heros */
+@layer utilities {
+  .bg-praia-gradient {
+    background: linear-gradient(
+      135deg,
+      hsl(34 71% 96%) 0%,
+      hsl(174 41% 88%) 50%,
+      hsl(34 71% 96%) 100%
+    );
+  }
+  .text-display {
+    font-family: var(--font-display), Georgia, serif;
+    letter-spacing: -0.02em;
   }
 }

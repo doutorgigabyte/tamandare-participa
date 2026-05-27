@@ -104,16 +104,16 @@ export function ChatShell() {
     <div className="flex h-[calc(100dvh-8rem)] flex-col gap-4">
       <div
         ref={scrollRef}
-        className="flex-1 overflow-y-auto rounded-xl border border-zinc-800 bg-zinc-950/50 p-4"
+        className="flex-1 overflow-y-auto rounded-xl border border-border bg-muted/40 p-4"
         aria-live="polite"
       >
         {isEmpty ? (
           <div className="flex h-full flex-col items-center justify-center gap-6 text-center">
             <div>
-              <h2 className="text-xl font-semibold text-zinc-100">
+              <h2 className="text-xl font-semibold text-foreground">
                 Pergunte sobre o Plano Diretor
               </h2>
-              <p className="mt-1 max-w-md text-sm text-zinc-400">
+              <p className="mt-1 max-w-md text-sm text-muted-foreground">
                 As respostas vêm dos 2 documentos oficiais (Circular 001-2026 e
                 Caderno ICR). Cada afirmação técnica é citada.
               </p>
@@ -126,7 +126,7 @@ export function ChatShell() {
               <ChatMessage key={m.id} message={m} />
             ))}
             {pending && (
-              <div className="text-sm text-zinc-500" aria-label="Buscando contexto e gerando resposta">
+              <div className="text-sm text-muted-foreground" aria-label="Buscando contexto e gerando resposta">
                 Buscando nos documentos oficiais…
               </div>
             )}

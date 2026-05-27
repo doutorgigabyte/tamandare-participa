@@ -24,12 +24,12 @@ export default async function AdminPage({
     return (
       <main className="container mx-auto max-w-2xl px-4 py-16">
         <h1 className="text-3xl font-bold tracking-tight">Admin desabilitado</h1>
-        <p className="mt-4 text-zinc-300">
+        <p className="mt-4 text-foreground/90">
           Pra ativar o painel de moderação, defina{' '}
           <code className="font-mono text-primary">ADMIN_TOKEN</code> em{' '}
           <code className="font-mono">.env.local</code>. Gere com:
         </p>
-        <pre className="mt-3 overflow-x-auto rounded-lg border border-zinc-800 bg-zinc-950 p-3 text-xs text-zinc-300">
+        <pre className="mt-3 overflow-x-auto rounded-lg border border-border bg-background p-3 text-xs text-foreground/90">
 {`node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`}
         </pre>
       </main>
@@ -64,7 +64,7 @@ export default async function AdminPage({
     return (
       <main className="container mx-auto max-w-3xl px-4 py-10">
         <h1 className="text-3xl font-bold tracking-tight">Admin</h1>
-        <div className="mt-6 rounded-lg border border-red-900/40 bg-red-950/30 p-4 text-sm text-red-300">
+        <div className="mt-6 rounded-lg border border-atlantico-terracota/30 bg-atlantico-terracota-clara/20 p-4 text-sm text-atlantico-terracota">
           Erro ao carregar contribuições: {error.message}.
           {' '}Supabase pode não estar configurado — confira <code>NEXT_PUBLIC_SUPABASE_URL</code> e <code>SUPABASE_SERVICE_ROLE_KEY</code>.
         </div>
@@ -79,7 +79,7 @@ export default async function AdminPage({
     <main className="container mx-auto max-w-6xl px-4 py-10">
       <header className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-sm uppercase tracking-wide text-zinc-500">
+          <p className="text-sm uppercase tracking-wide text-muted-foreground">
             Moderação
           </p>
           <h1 className="mt-1 text-3xl font-bold tracking-tight">
@@ -89,7 +89,7 @@ export default async function AdminPage({
         <form action="/api/admin/logout" method="post">
           <button
             type="submit"
-            className="text-xs text-zinc-400 hover:text-zinc-100"
+            className="text-xs text-muted-foreground hover:text-foreground"
           >
             Sair
           </button>
@@ -143,7 +143,7 @@ function CountBadges({
             className={`rounded-full border px-3 py-1.5 text-xs ${
               isActive
                 ? 'border-primary/60 bg-primary/15 text-primary'
-                : 'border-zinc-800 bg-zinc-950/50 text-zinc-400 hover:text-zinc-100'
+                : 'border-border bg-muted/40 text-muted-foreground hover:text-foreground'
             }`}
           >
             {f.label} <span className="font-mono">({count})</span>

@@ -32,7 +32,7 @@ export function ModerationQueue({
 
   if (visible.length === 0) {
     return (
-      <div className="rounded-xl border border-zinc-800 bg-zinc-950/50 p-10 text-center text-sm text-zinc-500">
+      <div className="rounded-xl border border-border bg-muted/40 p-10 text-center text-sm text-muted-foreground">
         Nenhuma contribuição nesta fila.
       </div>
     );
@@ -96,44 +96,44 @@ function Card({
   pending: boolean;
 }) {
   return (
-    <article className="rounded-xl border border-zinc-800 bg-zinc-950/50 p-5">
+    <article className="rounded-xl border border-border bg-muted/40 p-5">
       <header className="mb-3 flex flex-wrap items-center gap-2 text-xs">
         <StatusBadge status={c.status} />
-        <span className="rounded-full border border-zinc-800 bg-zinc-900 px-2 py-0.5 text-zinc-300">
+        <span className="rounded-full border border-border bg-card px-2 py-0.5 text-foreground/90">
           {c.category}
         </span>
         {c.macroarea_slug && (
-          <span className="rounded-full border border-zinc-800 bg-zinc-900 px-2 py-0.5 text-zinc-300">
+          <span className="rounded-full border border-border bg-card px-2 py-0.5 text-foreground/90">
             {c.macroarea_slug}
           </span>
         )}
         {c.is_anonymous && (
-          <span className="rounded-full border border-zinc-800 bg-zinc-900 px-2 py-0.5 text-zinc-400">
+          <span className="rounded-full border border-border bg-card px-2 py-0.5 text-muted-foreground">
             anônimo
           </span>
         )}
-        <span className="ml-auto font-mono text-zinc-500">
+        <span className="ml-auto font-mono text-muted-foreground">
           {new Date(c.created_at).toLocaleString('pt-BR')}
         </span>
       </header>
 
-      <p className="whitespace-pre-wrap text-sm leading-relaxed text-zinc-200">
+      <p className="whitespace-pre-wrap text-sm leading-relaxed text-foreground">
         {c.body}
       </p>
 
       {c.location_address && (
-        <p className="mt-3 text-xs text-zinc-500">
-          Endereço: <span className="text-zinc-300">{c.location_address}</span>
+        <p className="mt-3 text-xs text-muted-foreground">
+          Endereço: <span className="text-foreground/90">{c.location_address}</span>
         </p>
       )}
 
-      <div className="mt-3 flex flex-wrap gap-3 text-xs text-zinc-500">
+      <div className="mt-3 flex flex-wrap gap-3 text-xs text-muted-foreground">
         <span>
-          Hash: <span className="font-mono text-zinc-400">{c.hash_integrity.slice(0, 16)}…</span>
+          Hash: <span className="font-mono text-muted-foreground">{c.hash_integrity.slice(0, 16)}…</span>
         </span>
         {c.moderator_notes && (
           <span>
-            Notas: <span className="text-zinc-400">{c.moderator_notes}</span>
+            Notas: <span className="text-muted-foreground">{c.moderator_notes}</span>
           </span>
         )}
       </div>
@@ -169,9 +169,9 @@ function StatusBadge({ status }: { status: string }) {
     pending: { label: 'Pendente', cls: 'border-amber-900/60 bg-amber-950/40 text-amber-300' },
     published: { label: 'Publicada', cls: 'border-emerald-900/60 bg-emerald-950/40 text-emerald-300' },
     flagged: { label: 'Sinalizada', cls: 'border-orange-900/60 bg-orange-950/40 text-orange-300' },
-    spam: { label: 'Spam', cls: 'border-red-900/60 bg-red-950/40 text-red-300' },
+    spam: { label: 'Spam', cls: 'border-red-900/60 bg-red-950/40 text-atlantico-terracota' },
   };
-  const cfg = map[status] ?? { label: status, cls: 'border-zinc-800 bg-zinc-900 text-zinc-300' };
+  const cfg = map[status] ?? { label: status, cls: 'border-border bg-card text-foreground/90' };
   return (
     <span className={`rounded-full border px-2 py-0.5 ${cfg.cls}`}>
       {cfg.label}
@@ -182,8 +182,8 @@ function StatusBadge({ status }: { status: string }) {
 const VARIANT_CLS: Record<string, string> = {
   success: 'border-emerald-900/40 bg-emerald-950/30 text-emerald-300 hover:bg-emerald-950/60',
   warning: 'border-orange-900/40 bg-orange-950/30 text-orange-300 hover:bg-orange-950/60',
-  danger: 'border-red-900/40 bg-red-950/30 text-red-300 hover:bg-red-950/60',
-  neutral: 'border-zinc-800 bg-zinc-900 text-zinc-300 hover:bg-zinc-800',
+  danger: 'border-atlantico-terracota/30 bg-atlantico-terracota-clara/20 text-atlantico-terracota hover:bg-red-950/60',
+  neutral: 'border-border bg-card text-foreground/90 hover:bg-muted',
 };
 
 function ActionButton({

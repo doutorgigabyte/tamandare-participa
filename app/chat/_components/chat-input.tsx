@@ -42,7 +42,7 @@ export function ChatInput({ value, onChange, onSubmit, disabled, pending }: Prop
         placeholder="Pergunte sobre o Plano Diretor de Tamandaré..."
         disabled={disabled}
         maxLength={2000}
-        className="w-full resize-none rounded-xl border border-zinc-800 bg-zinc-900/60 p-4 pr-14 text-base text-zinc-100 placeholder:text-zinc-500 focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-50"
+        className="w-full resize-none rounded-xl border border-border bg-card/60 p-4 pr-14 text-base text-foreground placeholder:text-muted-foreground focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-50"
         aria-label="Pergunta para o assistente"
       />
       <button

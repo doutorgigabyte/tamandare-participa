@@ -19,7 +19,7 @@ export function ChatMessage({ message }: Props) {
       <div
         className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
           isUser
-            ? 'bg-zinc-800 text-zinc-300'
+            ? 'bg-muted text-foreground/90'
             : 'bg-primary/15 text-primary'
         }`}
         aria-hidden
@@ -31,8 +31,8 @@ export function ChatMessage({ message }: Props) {
         <div
           className={`inline-block max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap ${
             isUser
-              ? 'bg-zinc-800 text-zinc-100'
-              : 'bg-zinc-900/60 text-zinc-100 ring-1 ring-zinc-800'
+              ? 'bg-muted text-foreground'
+              : 'bg-card/60 text-foreground ring-1 ring-zinc-800'
           }`}
         >
           {message.content}
@@ -64,7 +64,7 @@ export function ChatMessage({ message }: Props) {
 function CitationsBlock({ citations }: { citations: Citation[] }) {
   return (
     <div className="mt-2 flex flex-col gap-1.5">
-      <span className="text-xs uppercase tracking-wide text-zinc-500">
+      <span className="text-xs uppercase tracking-wide text-muted-foreground">
         Fontes consultadas
       </span>
       <div className="flex flex-wrap gap-1.5">

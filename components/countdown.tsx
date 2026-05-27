@@ -48,8 +48,8 @@ export function Countdown() {
 
   if (remaining.total === 0) {
     return (
-      <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-6 text-center">
-        <p className="text-zinc-300">
+      <div className="rounded-xl border border-border bg-muted/40 p-6 text-center">
+        <p className="text-muted-foreground">
           O prazo de contribuição terminou. Você ainda pode acompanhar os
           resultados.
         </p>
@@ -58,11 +58,11 @@ export function Countdown() {
   }
 
   return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-6">
-      <p className="mb-4 text-center text-xs uppercase tracking-widest text-zinc-400">
+    <div>
+      <p className="mb-4 text-center text-[11px] font-medium uppercase tracking-[0.15em] text-atlantico-mar-profundo">
         Tempo restante pra protocolar sua contribuição
       </p>
-      <div className="grid grid-cols-4 gap-3 text-center">
+      <div className="grid grid-cols-4 gap-2 text-center sm:gap-3">
         <Unit label="Dias" value={remaining.days} />
         <Unit label="Horas" value={remaining.hours} />
         <Unit label="Minutos" value={remaining.minutes} />
@@ -74,14 +74,11 @@ export function Countdown() {
 
 function Unit({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-lg bg-zinc-950/60 p-3">
-      <div
-        className="font-mono text-2xl tabular-nums sm:text-3xl"
-        style={{ color: '#00D9FF' }}
-      >
+    <div className="rounded-lg bg-muted/60 p-3 sm:p-4">
+      <div className="font-display text-2xl font-semibold tabular-nums text-atlantico-mar-profundo sm:text-3xl">
         {String(value).padStart(2, '0')}
       </div>
-      <div className="mt-1 text-[10px] uppercase tracking-wider text-zinc-500">
+      <div className="mt-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
         {label}
       </div>
     </div>

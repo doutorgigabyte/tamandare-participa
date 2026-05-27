@@ -42,8 +42,8 @@ export function MacroareaBreakdown({ agg }: Props) {
   const max = Math.max(...rows.map((r) => r.count), 1);
 
   return (
-    <section className="rounded-xl border border-zinc-800 bg-zinc-950/50 p-6">
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-400">
+    <section className="rounded-xl border border-border bg-muted/40 p-6">
+      <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
         Contribuições por macroárea
       </h2>
       <div className="mt-4 flex flex-col gap-2">
@@ -52,7 +52,7 @@ export function MacroareaBreakdown({ agg }: Props) {
           return (
             <div key={r.slug}>
               <div className="mb-1 flex items-baseline justify-between text-sm">
-                <span className="flex items-center gap-2 text-zinc-300">
+                <span className="flex items-center gap-2 text-foreground/90">
                   <span
                     aria-hidden
                     className="inline-block h-2.5 w-2.5 rounded-full"
@@ -60,9 +60,9 @@ export function MacroareaBreakdown({ agg }: Props) {
                   />
                   {r.name}
                 </span>
-                <span className="font-mono text-zinc-400">{r.count}</span>
+                <span className="font-mono text-muted-foreground">{r.count}</span>
               </div>
-              <div className="h-1.5 overflow-hidden rounded-full bg-zinc-900">
+              <div className="h-1.5 overflow-hidden rounded-full bg-card">
                 <div
                   className="h-full rounded-full transition-all"
                   style={{

@@ -1,6 +1,20 @@
 import type { Metadata } from 'next';
+import { Inter, Fraunces } from 'next/font/google';
 import { Toaster } from 'sonner';
 import './globals.css';
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
+
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  variable: '--font-fraunces',
+  display: 'swap',
+  weight: ['400', '500', '600', '700'],
+});
 
 export const metadata: Metadata = {
   title: {
@@ -27,10 +41,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR" className="dark">
-      <body className="min-h-screen bg-background font-sans antialiased">
+    <html lang="pt-BR" className={`${inter.variable} ${fraunces.variable}`}>
+      <body className="min-h-screen bg-background font-sans text-foreground antialiased">
         {children}
-        <Toaster theme="dark" position="top-right" richColors />
+        <Toaster
+          theme="light"
+          position="top-right"
+          richColors
+          toastOptions={{
+            style: {
+              fontFamily: 'var(--font-inter)',
+            },
+          }}
+        />
       </body>
     </html>
   );

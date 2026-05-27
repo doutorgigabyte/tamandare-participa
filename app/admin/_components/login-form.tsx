@@ -9,16 +9,16 @@ export function LoginForm({ errorCode }: { errorCode?: string }) {
   const errorMsg = errorCode ? ERROR_MESSAGES[errorCode] : null;
   return (
     <main className="container mx-auto flex min-h-[80vh] max-w-md flex-col justify-center px-4 py-10">
-      <div className="rounded-2xl border border-zinc-800 bg-zinc-950/60 p-8">
+      <div className="rounded-2xl border border-border bg-card/60 p-8">
         <div className="mb-5 flex items-center gap-3">
           <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/15 text-primary">
             <Lock className="h-4 w-4" />
           </span>
           <div>
-            <p className="text-xs uppercase tracking-wide text-zinc-500">
+            <p className="text-xs uppercase tracking-wide text-muted-foreground">
               Acesso restrito
             </p>
-            <h1 className="text-xl font-semibold text-zinc-100">
+            <h1 className="text-xl font-semibold text-foreground">
               Moderação Tamandaré Participa
             </h1>
           </div>
@@ -30,18 +30,18 @@ export function LoginForm({ errorCode }: { errorCode?: string }) {
           className="flex flex-col gap-3"
         >
           <label className="flex flex-col gap-1.5 text-sm">
-            <span className="text-zinc-400">ADMIN_TOKEN</span>
+            <span className="text-muted-foreground">ADMIN_TOKEN</span>
             <input
               type="password"
               name="password"
               required
               autoFocus
               autoComplete="current-password"
-              className="rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-base text-zinc-100 focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/30"
+              className="rounded-lg border border-border bg-background px-3 py-2 text-base text-foreground focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/30"
             />
           </label>
           {errorMsg && (
-            <p className="text-sm text-red-400" role="alert">
+            <p className="text-sm text-atlantico-terracota" role="alert">
               {errorMsg}
             </p>
           )}
@@ -53,7 +53,7 @@ export function LoginForm({ errorCode }: { errorCode?: string }) {
           </button>
         </form>
 
-        <p className="mt-4 text-xs text-zinc-500">
+        <p className="mt-4 text-xs text-muted-foreground">
           Sessão válida por 8h. Cookie HTTP-only com flag secure em produção.
         </p>
       </div>

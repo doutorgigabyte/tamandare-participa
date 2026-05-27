@@ -14,7 +14,7 @@ const RealMap = dynamic(() => import('./real-map'), {
   ssr: false,
   loading: () => (
     <div className="flex h-[60vh] min-h-[400px] items-center justify-center lg:h-[640px]">
-      <div className="flex flex-col items-center gap-3 text-zinc-500">
+      <div className="flex flex-col items-center gap-3 text-muted-foreground">
         <Loader2 className="h-6 w-6 animate-spin" />
         <p className="text-sm">Carregando mapa interativo…</p>
       </div>
@@ -82,7 +82,7 @@ export function MapShell({ macroareas }: Props) {
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_360px]">
       {/* MAP / PLACEHOLDER */}
-      <div className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950/50">
+      <div className="overflow-hidden rounded-2xl border border-border bg-muted/40">
         {hasMap ? (
           <RealMap
             apiKey={apiKey!}
@@ -131,19 +131,19 @@ export function MapShell({ macroareas }: Props) {
 function MapPlaceholder() {
   return (
     <div className="flex h-[60vh] min-h-[400px] flex-col items-center justify-center gap-4 p-8 text-center lg:h-[640px]">
-      <MapPin className="h-12 w-12 text-zinc-700" />
+      <MapPin className="h-12 w-12 text-border" />
       <div>
-        <h3 className="text-lg font-semibold text-zinc-100">
+        <h3 className="text-lg font-semibold text-foreground">
           Mapa interativo pronto pra ativar
         </h3>
-        <p className="mt-2 max-w-md text-sm text-zinc-400">
+        <p className="mt-2 max-w-md text-sm text-muted-foreground">
           Adicione <code className="font-mono text-primary">NEXT_PUBLIC_GMAPS_FRONTEND_KEY</code>{' '}
           em <code className="font-mono">.env.local</code> pra ver o mapa do
           Google com as 10 macroáreas sobrepostas. As coordenadas atuais são
           aproximação até a digitalização do mapa-síntese oficial.
         </p>
       </div>
-      <p className="text-xs text-zinc-600">
+      <p className="text-xs text-muted-foreground/70">
         Enquanto isso, navegue pelos cards ao lado ou use &quot;Em qual macroárea eu
         moro?&quot;
       </p>
@@ -163,8 +163,8 @@ function MacroareaList({
   onPick: (slug: string) => void;
 }) {
   return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-950/50 p-4">
-      <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-zinc-400">
+    <div className="rounded-xl border border-border bg-muted/40 p-4">
+      <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
         10 macroáreas propostas
       </h3>
       <div className="flex flex-col gap-1">
@@ -173,17 +173,17 @@ function MacroareaList({
             key={m.slug}
             type="button"
             onClick={() => onPick(m.slug)}
-            className="group flex items-center gap-2 rounded-lg px-2 py-2 text-left text-sm transition-colors hover:bg-zinc-900"
+            className="group flex items-center gap-2 rounded-lg px-2 py-2 text-left text-sm transition-colors hover:bg-card"
           >
             <span
               aria-hidden
               className="inline-block h-3 w-3 shrink-0 rounded-full"
               style={{ backgroundColor: m.display_color }}
             />
-            <span className="flex-1 text-zinc-200 group-hover:text-zinc-50">
+            <span className="flex-1 text-foreground group-hover:text-foreground">
               {m.name.replace(/^(?:Macroárea|Zona Especial) (?:de |dos? |Centro )?/, '')}
             </span>
-            <ArrowRight className="h-3 w-3 text-zinc-600 transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
+            <ArrowRight className="h-3 w-3 text-muted-foreground/70 transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
           </button>
         ))}
       </div>
@@ -212,7 +212,7 @@ function Drawer({
     >
       <div className="mb-3 flex items-start justify-between gap-2">
         <div>
-          <p className="text-xs uppercase tracking-wide text-zinc-500">
+          <p className="text-xs uppercase tracking-wide text-muted-foreground">
             Macroárea
           </p>
           <h3
@@ -225,24 +225,24 @@ function Drawer({
         <button
           type="button"
           onClick={onClose}
-          className="text-xs text-zinc-500 hover:text-zinc-200"
+          className="text-xs text-muted-foreground hover:text-foreground"
           aria-label="Voltar à lista"
         >
           Voltar à lista
         </button>
       </div>
 
-      <p className="text-sm text-zinc-300">{macroarea.description_plain}</p>
+      <p className="text-sm text-foreground/90">{macroarea.description_plain}</p>
 
       {macroarea.attention_points.length > 0 && (
         <div className="mt-4">
-          <p className="text-xs uppercase tracking-wide text-zinc-500">
+          <p className="text-xs uppercase tracking-wide text-muted-foreground">
             Pontos de atenção
           </p>
-          <ul className="mt-2 flex flex-col gap-1 text-sm text-zinc-200">
+          <ul className="mt-2 flex flex-col gap-1 text-sm text-foreground">
             {macroarea.attention_points.map((p) => (
               <li key={p} className="flex gap-2">
-                <span aria-hidden className="text-zinc-600">·</span>
+                <span aria-hidden className="text-muted-foreground/70">·</span>
                 {p}
               </li>
             ))}
@@ -253,7 +253,7 @@ function Drawer({
       <div className="mt-5 flex flex-col gap-2">
         <Link
           href={`/zoneamento/${macroarea.slug}`}
-          className="inline-flex items-center justify-center gap-1 rounded-lg border border-zinc-700 bg-zinc-900/60 px-3 py-2 text-sm text-zinc-100 transition-colors hover:bg-zinc-800"
+          className="inline-flex items-center justify-center gap-1 rounded-lg border border-border bg-card/60 px-3 py-2 text-sm text-foreground transition-colors hover:bg-muted"
         >
           Ver detalhe completo
           <ArrowRight className="h-3 w-3" />

@@ -21,10 +21,10 @@ const COPY: Record<Props['reason'], { title: string; body: string }> = {
 export function EmptyState({ reason }: Props) {
   const { title, body } = COPY[reason];
   return (
-    <div className="mt-10 rounded-2xl border border-zinc-800 bg-zinc-950/60 p-10 text-center">
+    <div className="mt-10 rounded-2xl border border-border bg-card/60 p-10 text-center">
       <Sparkles className="mx-auto mb-4 h-8 w-8 text-primary" />
-      <h2 className="text-xl font-semibold text-zinc-100">{title}</h2>
-      <p className="mx-auto mt-3 max-w-md text-sm text-zinc-400">{body}</p>
+      <h2 className="text-xl font-semibold text-foreground">{title}</h2>
+      <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">{body}</p>
       <Link
         href="/contribuir"
         className="mt-6 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"

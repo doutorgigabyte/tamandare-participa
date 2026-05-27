@@ -22,13 +22,13 @@ export default function AudienciaPage() {
   return (
     <main className="container mx-auto max-w-3xl px-4 py-12">
       <header className="mb-10">
-        <p className="text-sm uppercase tracking-wide text-zinc-500">
+        <p className="text-sm uppercase tracking-wide text-muted-foreground">
           Audiência Pública
         </p>
         <h1 className="mt-2 text-4xl font-bold tracking-tight">
           Revisão do Plano Diretor de Tamandaré
         </h1>
-        <p className="mt-3 text-base text-zinc-300">
+        <p className="mt-3 text-base text-foreground/90">
           Convocada pelo Edital nº 002/2026 do Gabinete do Prefeito, em
           consonância com o Estatuto da Cidade (Lei Federal nº 10.257/2001) e
           com a Recomendação nº 01/2025 do Ministério Público de PE.
@@ -42,15 +42,15 @@ export default function AudienciaPage() {
         <InfoCard icon={MapPin} label="Local" value="Auditório do CEPENE" />
       </section>
 
-      <div className="mt-4 rounded-lg border border-zinc-800 bg-zinc-900/40 p-4 text-sm text-zinc-400">
-        <strong className="text-zinc-200">A audiência já aconteceu.</strong>{' '}
+      <div className="mt-4 rounded-lg border border-border bg-muted/40 p-4 text-sm text-muted-foreground">
+        <strong className="text-foreground">A audiência já aconteceu.</strong>{' '}
         Esta plataforma complementa a audiência: capta contribuições por escrito
         durante a janela legal de 5 dias após o evento.
       </div>
 
       {/* Countdown */}
       <section className="mt-10">
-        <h2 className="mb-4 text-lg font-semibold text-zinc-100">
+        <h2 className="mb-4 text-lg font-semibold text-foreground">
           Prazo de contribuição escrita
         </h2>
         <Countdown />
@@ -58,10 +58,10 @@ export default function AudienciaPage() {
 
       {/* Documentos oficiais */}
       <section className="mt-10">
-        <h2 className="mb-4 text-lg font-semibold text-zinc-100">
+        <h2 className="mb-4 text-lg font-semibold text-foreground">
           Documentos oficiais
         </h2>
-        <p className="mb-4 text-sm text-zinc-400">
+        <p className="mb-4 text-sm text-muted-foreground">
           Material técnico de fundamentação disponibilizado pela Prefeitura para
           leitura prévia à audiência.
         </p>
@@ -79,14 +79,14 @@ export default function AudienciaPage() {
             href={PORTAL_OFICIAL}
           />
         </div>
-        <p className="mt-3 text-xs text-zinc-500">
+        <p className="mt-3 text-xs text-muted-foreground">
           Hospedados no portal oficial da Prefeitura Municipal de Tamandaré.
         </p>
       </section>
 
       {/* Caminhos pra contribuir */}
       <section className="mt-12">
-        <h2 className="mb-4 text-lg font-semibold text-zinc-100">
+        <h2 className="mb-4 text-lg font-semibold text-foreground">
           Três caminhos pra contribuir
         </h2>
         <div className="flex flex-col gap-3">
@@ -113,10 +113,10 @@ export default function AudienciaPage() {
 
       {/* Fundamento legal */}
       <section className="mt-12">
-        <h2 className="mb-4 text-lg font-semibold text-zinc-100">
+        <h2 className="mb-4 text-lg font-semibold text-foreground">
           Fundamento legal
         </h2>
-        <ul className="flex flex-col gap-2 text-sm text-zinc-300">
+        <ul className="flex flex-col gap-2 text-sm text-foreground/90">
           <FundamentoItem>
             Constituição Federal — artigos sobre Política Urbana (§ 182)
           </FundamentoItem>
@@ -141,7 +141,7 @@ export default function AudienciaPage() {
       </section>
 
       {/* Navegação */}
-      <nav className="mt-12 flex flex-col items-start gap-2 border-t border-zinc-800 pt-6 text-sm">
+      <nav className="mt-12 flex flex-col items-start gap-2 border-t border-border pt-6 text-sm">
         <Link href="/diagnostico" className="inline-flex items-center gap-1 text-primary hover:underline">
           Ver o diagnóstico técnico em 5 indicadores
           <ArrowRight className="h-3 w-3" />
@@ -150,7 +150,7 @@ export default function AudienciaPage() {
           Tirar dúvidas com a IA (cita as páginas)
           <ArrowRight className="h-3 w-3" />
         </Link>
-        <Link href="/" className="inline-flex items-center gap-1 text-zinc-400 hover:text-zinc-200">
+        <Link href="/" className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground">
           Voltar pra início
         </Link>
       </nav>
@@ -174,13 +174,13 @@ function InfoCard({
   hint?: string;
 }) {
   return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-950/50 p-4">
-      <div className="mb-2 flex items-center gap-2 text-xs uppercase tracking-wide text-zinc-500">
+    <div className="rounded-xl border border-border bg-muted/40 p-4">
+      <div className="mb-2 flex items-center gap-2 text-xs uppercase tracking-wide text-muted-foreground">
         <Icon className="h-3 w-3" aria-hidden />
         {label}
       </div>
-      <p className="font-semibold text-zinc-100">{value}</p>
-      {hint && <p className="mt-0.5 text-xs text-zinc-500">{hint}</p>}
+      <p className="font-semibold text-foreground">{value}</p>
+      {hint && <p className="mt-0.5 text-xs text-muted-foreground">{hint}</p>}
     </div>
   );
 }
@@ -201,15 +201,15 @@ function DocCard({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group rounded-xl border border-zinc-800 bg-zinc-950/50 p-4 transition-colors hover:border-primary/40"
+      className="group rounded-xl border border-border bg-muted/40 p-4 transition-colors hover:border-primary/40"
     >
       <div className="mb-3 flex items-center gap-2 text-primary">
         <FileText className="h-4 w-4" aria-hidden />
         <span className="text-xs uppercase tracking-wide">PDF oficial</span>
       </div>
-      <p className="font-semibold text-zinc-100">{title}</p>
-      <p className="mt-1 text-sm text-zinc-400">{subtitle}</p>
-      <p className="mt-2 text-xs text-zinc-500">{pages}</p>
+      <p className="font-semibold text-foreground">{title}</p>
+      <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
+      <p className="mt-2 text-xs text-muted-foreground">{pages}</p>
       <span className="mt-3 inline-flex items-center gap-1 text-xs text-primary group-hover:underline">
         Abrir no portal da Prefeitura
         <ExternalLink className="h-3 w-3" />
@@ -239,8 +239,8 @@ function PathCard({
         highlight
           ? 'border-primary/40 bg-primary/5'
           : done
-            ? 'border-zinc-800 bg-zinc-950/40 opacity-60'
-            : 'border-zinc-800 bg-zinc-950/50'
+            ? 'border-border bg-muted/40 opacity-60'
+            : 'border-border bg-muted/40'
       }`}
     >
       <div className="flex items-start gap-3">
@@ -248,14 +248,14 @@ function PathCard({
           className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full font-mono text-sm font-bold ${
             highlight
               ? 'bg-primary/20 text-primary'
-              : 'bg-zinc-900 text-zinc-400'
+              : 'bg-card text-muted-foreground'
           }`}
         >
           {n}
         </span>
         <div className="flex-1">
-          <p className="font-semibold text-zinc-100">{label}</p>
-          <p className="mt-1 text-sm text-zinc-400">{body}</p>
+          <p className="font-semibold text-foreground">{label}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{body}</p>
           {cta && (
             <Link
               href={cta.href}
@@ -274,7 +274,7 @@ function PathCard({
 function FundamentoItem({ children }: { children: React.ReactNode }) {
   return (
     <li className="flex gap-3">
-      <Scale className="mt-0.5 h-3.5 w-3.5 shrink-0 text-zinc-500" aria-hidden />
+      <Scale className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden />
       <span>{children}</span>
     </li>
   );

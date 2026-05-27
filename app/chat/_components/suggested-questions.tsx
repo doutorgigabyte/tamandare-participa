@@ -43,10 +43,10 @@ export function SuggestedQuestions({ onPick, disabled }: Props) {
           type="button"
           onClick={() => onPick(q.text)}
           disabled={disabled}
-          className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-4 text-left text-sm text-zinc-200 transition-colors hover:border-primary/60 hover:bg-zinc-900 disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-lg border border-border bg-muted/40 p-4 text-left text-sm text-foreground transition-colors hover:border-primary/60 hover:bg-card disabled:cursor-not-allowed disabled:opacity-50"
           aria-label={`Perguntar: ${q.text}`}
         >
-          <span className="block text-xs uppercase tracking-wide text-zinc-500">
+          <span className="block text-xs uppercase tracking-wide text-muted-foreground">
             Exemplo
           </span>
           <span className="mt-1 block">{q.text}</span>

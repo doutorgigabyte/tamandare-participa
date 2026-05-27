@@ -31,7 +31,7 @@ export default function MacroareaPage({ params }: PageProps) {
     <main className="container mx-auto max-w-3xl px-4 py-10">
       <Link
         href="/zoneamento"
-        className="mb-6 inline-flex items-center gap-1 text-sm text-zinc-400 hover:text-zinc-200"
+        className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="h-3 w-3" />
         Todas as macroáreas
@@ -51,7 +51,7 @@ export default function MacroareaPage({ params }: PageProps) {
             className="inline-block h-4 w-4 rounded-full"
             style={{ backgroundColor: m.display_color }}
           />
-          <p className="text-xs uppercase tracking-wide text-zinc-500">
+          <p className="text-xs uppercase tracking-wide text-muted-foreground">
             Macroárea
           </p>
         </div>
@@ -61,19 +61,19 @@ export default function MacroareaPage({ params }: PageProps) {
         >
           {m.name}
         </h1>
-        <p className="mt-4 text-base leading-relaxed text-zinc-200">
+        <p className="mt-4 text-base leading-relaxed text-foreground">
           {m.description_plain}
         </p>
       </header>
 
       {/* Descrição oficial */}
       {!isPlaceholder(m.description_official) && (
-        <section className="mt-8 rounded-xl border border-zinc-800 bg-zinc-950/50 p-6">
-          <div className="mb-2 flex items-center gap-2 text-xs uppercase tracking-wide text-zinc-400">
+        <section className="mt-8 rounded-xl border border-border bg-muted/40 p-6">
+          <div className="mb-2 flex items-center gap-2 text-xs uppercase tracking-wide text-muted-foreground">
             <FileText className="h-3 w-3" />
             Texto oficial — Circular 001-2026
           </div>
-          <p className="text-sm leading-relaxed text-zinc-300">
+          <p className="text-sm leading-relaxed text-foreground/90">
             {m.description_official}
           </p>
         </section>
@@ -82,10 +82,10 @@ export default function MacroareaPage({ params }: PageProps) {
       {/* O que muda */}
       {!isPlaceholder(m.changes_from_current) && (
         <section className="mt-8">
-          <h2 className="text-lg font-semibold text-zinc-100">
+          <h2 className="text-lg font-semibold text-foreground">
             O que muda em relação ao Plano de 2002
           </h2>
-          <p className="mt-3 text-base leading-relaxed text-zinc-300">
+          <p className="mt-3 text-base leading-relaxed text-foreground/90">
             {m.changes_from_current}
           </p>
         </section>
@@ -111,8 +111,8 @@ export default function MacroareaPage({ params }: PageProps) {
 
       {/* Aviso de dados */}
       {(isPlaceholder(m.description_official) || isPlaceholder(m.changes_from_current)) && (
-        <section className="mt-8 rounded-xl border border-zinc-800 bg-zinc-950/40 p-4 text-xs text-zinc-500">
-          <strong className="text-zinc-300">Conteúdo em complementação:</strong>{' '}
+        <section className="mt-8 rounded-xl border border-border bg-muted/40 p-4 text-xs text-muted-foreground">
+          <strong className="text-foreground/90">Conteúdo em complementação:</strong>{' '}
           o texto literal da Circular 001-2026 pra esta macroárea ainda está
           sendo digitalizado. Pra ler agora, baixe o documento original no{' '}
           <a
@@ -132,10 +132,10 @@ export default function MacroareaPage({ params }: PageProps) {
         <div className="flex items-start gap-3">
           <MapPin className="mt-1 h-5 w-5 shrink-0 text-primary" />
           <div className="flex-1">
-            <h3 className="text-lg font-semibold text-zinc-100">
+            <h3 className="text-lg font-semibold text-foreground">
               Quer dizer algo sobre esta macroárea?
             </h3>
-            <p className="mt-1 text-sm text-zinc-300">
+            <p className="mt-1 text-sm text-foreground/90">
               Mora aqui, trabalha aqui, frequenta aqui — sua contribuição
               entra no relatório oficial que vai pra Prefeitura.
             </p>

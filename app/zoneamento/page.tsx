@@ -11,13 +11,13 @@ export default function ZoneamentoPage() {
   return (
     <main className="container mx-auto max-w-7xl px-4 py-10">
       <header className="mb-6 max-w-3xl">
-        <p className="text-sm uppercase tracking-wide text-zinc-500">
+        <p className="text-sm uppercase tracking-wide text-muted-foreground">
           Zoneamento proposto
         </p>
         <h1 className="mt-2 text-4xl font-bold tracking-tight">
           As 10 macroáreas de Tamandaré
         </h1>
-        <p className="mt-3 text-base text-zinc-300">
+        <p className="mt-3 text-base text-foreground/90">
           O novo Plano Diretor reorganiza a cidade em 10 macroáreas — cada uma
           com regras próprias de uso e ocupação. Clique no mapa ou na lista pra
           ver detalhes, ou use o botão pra descobrir em qual macroárea você
@@ -27,8 +27,8 @@ export default function ZoneamentoPage() {
 
       <MapShell macroareas={MACROAREAS} />
 
-      <footer className="mt-8 rounded-xl border border-zinc-800 bg-zinc-950/50 p-4 text-xs text-zinc-500">
-        <strong className="text-zinc-300">Sobre os polígonos:</strong>{' '}
+      <footer className="mt-8 rounded-xl border border-border bg-muted/40 p-4 text-xs text-muted-foreground">
+        <strong className="text-foreground/90">Sobre os polígonos:</strong>{' '}
         as coordenadas atuais são aproximação visual. Quando shapefiles
         precisos forem digitalizados a partir do mapa da pág. 4 da Circular
         001-2026, o mapa ganha precisão geográfica. As informações textuais

@@ -27,7 +27,7 @@ export function MacroareaPill({ slug, name, color, href, className }: Props) {
       href={computedHref}
       className={cn(
         'inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium text-white transition-transform hover:scale-105',
-        !color && 'bg-zinc-700',
+        !color && 'bg-muted-foreground/40',
         className,
       )}
       style={style}

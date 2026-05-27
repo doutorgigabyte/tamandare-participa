@@ -44,10 +44,10 @@ function StatCard({
   hint?: string;
 }) {
   return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-950/50 p-5">
-      <p className="text-xs uppercase tracking-wide text-zinc-500">{label}</p>
-      <p className="mt-2 font-mono text-3xl font-bold text-zinc-100">{value}</p>
-      {hint && <p className="mt-1 text-xs text-zinc-500">{hint}</p>}
+    <div className="rounded-xl border border-border bg-muted/40 p-5">
+      <p className="text-xs uppercase tracking-wide text-muted-foreground">{label}</p>
+      <p className="mt-2 font-mono text-3xl font-bold text-foreground">{value}</p>
+      {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
     </div>
   );
 }

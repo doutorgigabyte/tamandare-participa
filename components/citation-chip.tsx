@@ -34,7 +34,7 @@ export function CitationChip({ source, page, item, href, className }: Props) {
   const content = (
     <span
       className={cn(
-        'inline-flex items-center gap-1 rounded-full border border-zinc-700 bg-zinc-900/60 px-2 py-0.5 font-mono text-[11px] text-zinc-300',
+        'inline-flex items-center gap-1 rounded-full border border-border bg-card/60 px-2 py-0.5 font-mono text-[11px] text-foreground/90',
         className,
       )}
     >
