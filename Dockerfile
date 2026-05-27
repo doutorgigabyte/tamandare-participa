@@ -8,7 +8,9 @@ FROM node:20-alpine AS deps
 WORKDIR /app
 RUN apk add --no-cache libc6-compat
 COPY package.json package-lock.json* ./
-RUN npm ci --no-audit --no-fund
+# npm install (não npm ci) porque o lockfile pode ter deps órfãs de iterações
+# anteriores. install sincroniza enquanto preserva versions do lock.
+RUN npm install --no-audit --no-fund --omit=dev=false
 
 # ---- Stage 2: builder -------------------------------------------------------
 FROM node:20-alpine AS builder
