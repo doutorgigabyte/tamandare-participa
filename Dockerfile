@@ -8,9 +8,14 @@ FROM node:20-alpine AS deps
 WORKDIR /app
 RUN apk add --no-cache libc6-compat
 COPY package.json package-lock.json* ./
-# npm install (não npm ci) porque o lockfile pode ter deps órfãs de iterações
-# anteriores. install sincroniza enquanto preserva versions do lock.
-RUN npm install --no-audit --no-fund --omit=dev=false
+# Configurações pra robustez contra ECONNRESET no VPS (registry timeouts).
+# npm install (não ci) pq lockfile pode ter deps órfãs de iterações anteriores.
+RUN npm config set fetch-timeout 600000 \
+ && npm config set fetch-retries 5 \
+ && npm config set fetch-retry-mintimeout 20000 \
+ && npm config set fetch-retry-maxtimeout 120000 \
+ && npm config set maxsockets 5 \
+ && npm install --no-audit --no-fund --prefer-online
 
 # ---- Stage 2: builder -------------------------------------------------------
 FROM node:20-alpine AS builder
