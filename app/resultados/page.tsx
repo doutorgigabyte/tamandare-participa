@@ -34,8 +34,7 @@ export default async function ResultadosPage() {
         <p className="mt-3 text-base text-foreground/90">
           Contribuições agregadas por macroárea e categoria, sem identidades. O
           conteúdo é exibido após validação automática anti-spam e passa por
-          revisão humana antes de virar parte do relatório final que vai pra
-          Prefeitura.
+          revisão humana antes de virar parte do documento independente que será protocolado como contribuição cidadã.
         </p>
       </header>
 

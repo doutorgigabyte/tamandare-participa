@@ -39,7 +39,7 @@ export function StepIdentification({
         </h2>
         <p className="mt-2 text-sm text-muted-foreground">
           Contribuição anônima tem o mesmo peso. Identificar-se ajuda se a
-          Prefeitura quiser fazer contato sobre sua sugestão.
+          eu precise esclarecer um detalhe da sua contribuição.
         </p>
       </legend>
 

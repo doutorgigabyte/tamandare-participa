@@ -45,7 +45,7 @@ export default function ContribuirPage({
           Envie sua contribuição
         </h1>
         <p className="mt-3 text-sm text-muted-foreground sm:text-base">
-          Sua opinião entra no relatório consolidado que vai à Prefeitura.
+          Sua opinião fica pública em /contribuicoes e entra no documento que será protocolado como contribuição cidadã.
           Leva cerca de 3 minutos.
         </p>
       </header>

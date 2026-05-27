@@ -8,7 +8,7 @@ export default function NotFound() {
       <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
         Erro 404
       </p>
-      <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+      <h1 className="mt-2 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
         Página não encontrada
       </h1>
       <p className="mt-3 max-w-md text-sm text-muted-foreground">
@@ -17,7 +17,7 @@ export default function NotFound() {
       </p>
 
       <ul className="mt-8 grid w-full max-w-md gap-2 text-left text-sm">
-        <LinkCard href="/" label="Início" sub="Landing com countdown e visão geral" />
+        <LinkCard href="/" label="Início" sub="Visão geral e por que essa plataforma existe" />
         <LinkCard
           href="/diagnostico"
           label="Diagnóstico"
@@ -29,9 +29,19 @@ export default function NotFound() {
           sub="As 10 macroáreas do novo Plano Diretor"
         />
         <LinkCard
+          href="/legislacao"
+          label="Legislação e estudos"
+          sub="Os 2 documentos oficiais navegáveis + glossário"
+        />
+        <LinkCard
           href="/contribuir"
           label="Contribuir"
-          sub="Enviar contribuição em ~3 min"
+          sub="Texto, áudio ou foto — até 5 minutos"
+        />
+        <LinkCard
+          href="/contribuicoes"
+          label="Todas as contribuições"
+          sub="Lista pública e auditável"
         />
         <LinkCard
           href="/chat"
@@ -64,9 +74,9 @@ function LinkCard({
     <li>
       <Link
         href={href}
-        className="block rounded-lg border border-border bg-muted/40 px-4 py-3 transition-colors hover:border-primary/40 hover:bg-card"
+        className="block rounded-lg border border-border bg-card px-4 py-3 shadow-soft transition-all hover:border-atlantico-mar-raso/40 hover:shadow-card"
       >
-        <span className="font-semibold text-foreground">{label}</span>
+        <span className="font-medium text-foreground">{label}</span>
         <span className="block text-xs text-muted-foreground">{sub}</span>
       </Link>
     </li>

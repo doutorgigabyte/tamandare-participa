@@ -137,7 +137,7 @@ export default function MacroareaPage({ params }: PageProps) {
             </h3>
             <p className="mt-1 text-sm text-foreground/90">
               Mora aqui, trabalha aqui, frequenta aqui — sua contribuição
-              entra no relatório oficial que vai pra Prefeitura.
+              fica pública em /contribuicoes e entra no documento que será protocolado como contribuição cidadã.
             </p>
             <Link
               href={{

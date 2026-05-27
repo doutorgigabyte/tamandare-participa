@@ -7,13 +7,14 @@ import {
   ExternalLink,
   ArrowRight,
   Scale,
+  AlertCircle,
+  CheckCircle2,
 } from 'lucide-react';
-import { Countdown } from '@/components/countdown';
 
 export const metadata = {
   title: 'A audiência pública de 26/05/2026',
   description:
-    'Convocação, fundamento legal e documentos oficiais da revisão do Plano Diretor de Tamandaré/PE.',
+    'O que foi a primeira audiência pública da revisão do Plano Diretor de Tamandaré/PE, documentos oficiais e fundamento legal. Cronograma de próximas etapas em definição.',
 };
 
 const PORTAL_OFICIAL = 'https://tamandare.pe.gov.br/plano-diretor-de-2026/';
@@ -22,10 +23,10 @@ export default function AudienciaPage() {
   return (
     <main className="container mx-auto max-w-3xl px-4 py-12">
       <header className="mb-10">
-        <p className="text-sm uppercase tracking-wide text-muted-foreground">
+        <p className="text-xs font-medium uppercase tracking-[0.15em] text-atlantico-mar-profundo">
           Audiência Pública
         </p>
-        <h1 className="mt-2 text-4xl font-bold tracking-tight">
+        <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
           Revisão do Plano Diretor de Tamandaré
         </h1>
         <p className="mt-3 text-base text-foreground/90">
@@ -35,76 +36,123 @@ export default function AudienciaPage() {
         </p>
       </header>
 
-      {/* Quando + Onde */}
+      {/* Quando + Onde — audiência já aconteceu */}
       <section className="grid gap-4 sm:grid-cols-3">
         <InfoCard icon={Calendar} label="Data" value="26 de maio de 2026" hint="Terça-feira" />
         <InfoCard icon={Clock} label="Horário" value="18h00" hint="Por ordem de chegada" />
         <InfoCard icon={MapPin} label="Local" value="Auditório do CEPENE" />
       </section>
 
-      <div className="mt-4 rounded-lg border border-border bg-muted/40 p-4 text-sm text-muted-foreground">
-        <strong className="text-foreground">A audiência já aconteceu.</strong>{' '}
-        Esta plataforma complementa a audiência: capta contribuições por escrito
-        durante a janela legal de 5 dias após o evento.
+      <div className="mt-4 flex items-start gap-3 rounded-xl border border-atlantico-mata-clara/60 bg-atlantico-mata-clara/15 p-4 text-sm">
+        <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-atlantico-mata-atlantica" aria-hidden />
+        <div>
+          <p className="font-medium text-foreground">A audiência já aconteceu.</p>
+          <p className="mt-1 text-foreground/85">
+            Na ocasião, foi sinalizado que a Prefeitura vai estabelecer um{' '}
+            <strong className="font-medium text-foreground">cronograma próprio</strong>{' '}
+            de contribuições — ainda não divulgado.
+          </p>
+        </div>
       </div>
 
-      {/* Countdown */}
-      <section className="mt-10">
-        <h2 className="mb-4 text-lg font-semibold text-foreground">
-          Prazo de contribuição escrita
-        </h2>
-        <Countdown />
+      {/* Cronograma em definição */}
+      <section className="mt-10 rounded-2xl border border-atlantico-mar-raso/30 bg-atlantico-mar-raso/5 p-6">
+        <div className="flex items-start gap-3">
+          <AlertCircle className="h-5 w-5 flex-shrink-0 text-atlantico-mar-profundo" aria-hidden />
+          <div>
+            <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-atlantico-mar-profundo">
+              Próximas etapas
+            </p>
+            <h2 className="mt-1 font-display text-xl font-semibold tracking-tight text-foreground">
+              Cronograma em definição pela Prefeitura
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-foreground/85 sm:text-base">
+              Ainda não há prazos novos publicados pra protocolo de
+              contribuições oficiais. Assim que o cronograma for divulgado,
+              esta página será atualizada — e idealmente vai incorporar uma{' '}
+              <strong className="font-medium text-foreground">
+                linha do tempo pública
+              </strong>{' '}
+              de eventos, prazos e documentos.
+            </p>
+            <p className="mt-3 text-xs text-muted-foreground">
+              Acompanhe pelo{' '}
+              <a
+                href={PORTAL_OFICIAL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-atlantico-mar-profundo underline-offset-2 hover:underline"
+              >
+                portal oficial da Prefeitura
+              </a>{' '}
+              ou aguarde notícias por aqui.
+            </p>
+          </div>
+        </div>
       </section>
 
-      {/* Documentos oficiais */}
+      {/* Documentos oficiais — apontam pra /legislacao agora */}
       <section className="mt-10">
-        <h2 className="mb-4 text-lg font-semibold text-foreground">
-          Documentos oficiais
+        <h2 className="mb-4 font-display text-2xl font-semibold tracking-tight text-foreground">
+          Documentos de fundamentação
         </h2>
         <p className="mb-4 text-sm text-muted-foreground">
-          Material técnico de fundamentação disponibilizado pela Prefeitura para
-          leitura prévia à audiência.
+          Material técnico que embasou a revisão. Pode baixar e navegar por
+          seções aqui mesmo na plataforma.
         </p>
         <div className="grid gap-3 sm:grid-cols-2">
           <DocCard
             title="Circular 001-2026"
             subtitle="Convocação da audiência pública"
-            pages="43 páginas"
-            href={PORTAL_OFICIAL}
+            pages="43 páginas · Prefeitura"
+            href="/legislacao/circular"
           />
           <DocCard
             title="Caderno ICR"
             subtitle="Análise Preliminar do Plano Diretor"
             pages="66 páginas · Instituto Cidades Responsivas"
-            href={PORTAL_OFICIAL}
+            href="/legislacao/caderno"
           />
         </div>
         <p className="mt-3 text-xs text-muted-foreground">
-          Hospedados no portal oficial da Prefeitura Municipal de Tamandaré.
+          Também disponível na{' '}
+          <a
+            href={PORTAL_OFICIAL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline-offset-2 hover:underline"
+          >
+            página oficial da Prefeitura
+          </a>
+          .
         </p>
       </section>
 
       {/* Caminhos pra contribuir */}
       <section className="mt-12">
-        <h2 className="mb-4 text-lg font-semibold text-foreground">
-          Três caminhos pra contribuir
+        <h2 className="mb-4 font-display text-2xl font-semibold tracking-tight text-foreground">
+          Como contribuir, hoje
         </h2>
+        <p className="mb-4 text-sm text-muted-foreground">
+          Os canais oficiais é a Prefeitura quem define. Esta plataforma é uma
+          forma complementar e independente.
+        </p>
         <div className="flex flex-col gap-3">
           <PathCard
             n={1}
-            label="Presencialmente (encerrado)"
-            body="Quem compareceu à audiência de 26/05 teve até 3 minutos pra falar. As falas foram registradas em ata oficial."
+            label="Presencialmente — audiência de 26/05 (encerrada)"
+            body="Quem compareceu teve até 3 minutos pra falar. As falas foram registradas em ata oficial pela Prefeitura."
             done
           />
           <PathCard
             n={2}
-            label="Por escrito junto à Prefeitura (até 31/05)"
-            body="Canal definido pela própria Circular. Protocolar diretamente no Gabinete do Prefeito."
+            label="Por escrito junto à Prefeitura (cronograma em definição)"
+            body="Canal oficial. Modalidade, endereço de protocolo e novo prazo serão definidos pela Prefeitura — acompanhe o portal oficial."
           />
           <PathCard
             n={3}
-            label="Pela plataforma Tamandaré Participa (até 31/05)"
-            body="Contribuição estruturada, geolocalizada, com hash de integridade. Entra no relatório consolidado que protocolamos junto à Prefeitura."
+            label="Pela plataforma Tamandaré Participa (sempre aberto)"
+            body="Iniciativa independente. Contribuições ficam públicas em /contribuicoes. Periodicamente serão consolidadas e protocoladas como contribuição cidadã — sem substituir o protocolo individual oficial."
             cta={{ href: '/contribuir', label: 'Contribuir agora' }}
             highlight
           />
@@ -113,7 +161,7 @@ export default function AudienciaPage() {
 
       {/* Fundamento legal */}
       <section className="mt-12">
-        <h2 className="mb-4 text-lg font-semibold text-foreground">
+        <h2 className="mb-4 font-display text-2xl font-semibold tracking-tight text-foreground">
           Fundamento legal
         </h2>
         <ul className="flex flex-col gap-2 text-sm text-foreground/90">
@@ -142,15 +190,31 @@ export default function AudienciaPage() {
 
       {/* Navegação */}
       <nav className="mt-12 flex flex-col items-start gap-2 border-t border-border pt-6 text-sm">
-        <Link href="/diagnostico" className="inline-flex items-center gap-1 text-primary hover:underline">
+        <Link
+          href="/legislacao"
+          className="inline-flex items-center gap-1 font-medium text-atlantico-mar-profundo hover:underline"
+        >
+          Documentos completos com glossário urbanístico
+          <ArrowRight className="h-3 w-3" />
+        </Link>
+        <Link
+          href="/diagnostico"
+          className="inline-flex items-center gap-1 font-medium text-atlantico-mar-profundo hover:underline"
+        >
           Ver o diagnóstico técnico em 5 indicadores
           <ArrowRight className="h-3 w-3" />
         </Link>
-        <Link href="/chat" className="inline-flex items-center gap-1 text-primary hover:underline">
+        <Link
+          href="/chat"
+          className="inline-flex items-center gap-1 font-medium text-atlantico-mar-profundo hover:underline"
+        >
           Tirar dúvidas com a IA (cita as páginas)
           <ArrowRight className="h-3 w-3" />
         </Link>
-        <Link href="/" className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1 text-muted-foreground hover:text-foreground"
+        >
           Voltar pra início
         </Link>
       </nav>
@@ -174,12 +238,12 @@ function InfoCard({
   hint?: string;
 }) {
   return (
-    <div className="rounded-xl border border-border bg-muted/40 p-4">
+    <div className="rounded-xl border border-border bg-card p-4 shadow-soft">
       <div className="mb-2 flex items-center gap-2 text-xs uppercase tracking-wide text-muted-foreground">
         <Icon className="h-3 w-3" aria-hidden />
         {label}
       </div>
-      <p className="font-semibold text-foreground">{value}</p>
+      <p className="font-display font-semibold text-foreground">{value}</p>
       {hint && <p className="mt-0.5 text-xs text-muted-foreground">{hint}</p>}
     </div>
   );
@@ -197,24 +261,24 @@ function DocCard({
   href: string;
 }) {
   return (
-    <a
+    <Link
       href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group rounded-xl border border-border bg-muted/40 p-4 transition-colors hover:border-primary/40"
+      className="group rounded-xl border border-border bg-card p-4 shadow-soft transition-all hover:border-atlantico-mar-raso/40 hover:shadow-card"
     >
-      <div className="mb-3 flex items-center gap-2 text-primary">
+      <div className="mb-3 flex items-center gap-2 text-atlantico-mar-profundo">
         <FileText className="h-4 w-4" aria-hidden />
-        <span className="text-xs uppercase tracking-wide">PDF oficial</span>
+        <span className="text-xs font-medium uppercase tracking-wide">
+          Documento
+        </span>
       </div>
-      <p className="font-semibold text-foreground">{title}</p>
+      <p className="font-display font-semibold text-foreground">{title}</p>
       <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
       <p className="mt-2 text-xs text-muted-foreground">{pages}</p>
-      <span className="mt-3 inline-flex items-center gap-1 text-xs text-primary group-hover:underline">
-        Abrir no portal da Prefeitura
-        <ExternalLink className="h-3 w-3" />
+      <span className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-atlantico-mar-profundo group-hover:underline">
+        Navegar por seções
+        <ArrowRight className="h-3 w-3" />
       </span>
-    </a>
+    </Link>
   );
 }
 
@@ -237,29 +301,29 @@ function PathCard({
     <div
       className={`rounded-xl border p-4 ${
         highlight
-          ? 'border-primary/40 bg-primary/5'
+          ? 'border-atlantico-mar-raso/40 bg-atlantico-mar-raso/5'
           : done
-            ? 'border-border bg-muted/40 opacity-60'
-            : 'border-border bg-muted/40'
+            ? 'border-border bg-muted/40 opacity-70'
+            : 'border-border bg-card shadow-soft'
       }`}
     >
       <div className="flex items-start gap-3">
         <span
-          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full font-mono text-sm font-bold ${
+          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full font-display text-sm font-semibold ${
             highlight
-              ? 'bg-primary/20 text-primary'
-              : 'bg-card text-muted-foreground'
+              ? 'bg-atlantico-mar-raso/20 text-atlantico-mar-profundo'
+              : 'bg-muted text-muted-foreground'
           }`}
         >
           {n}
         </span>
         <div className="flex-1">
-          <p className="font-semibold text-foreground">{label}</p>
+          <p className="font-medium text-foreground">{label}</p>
           <p className="mt-1 text-sm text-muted-foreground">{body}</p>
           {cta && (
             <Link
               href={cta.href}
-              className="mt-3 inline-flex items-center gap-1 text-sm text-primary hover:underline"
+              className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-atlantico-mar-profundo hover:underline"
             >
               {cta.label}
               <ArrowRight className="h-3 w-3" />

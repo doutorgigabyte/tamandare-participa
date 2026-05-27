@@ -15,12 +15,12 @@ export function StepConsent({
   return (
     <fieldset className="space-y-4">
       <legend>
-        <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+        <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
           7. Consentimento
         </h2>
         <p className="mt-2 text-sm text-muted-foreground">
           Antes de enviar, leia e marque a caixa abaixo. Sem esse consentimento
-          não podemos protocolar sua contribuição.
+          não podemos registrar sua contribuição.
         </p>
       </legend>
 
@@ -37,15 +37,18 @@ export function StepConsent({
           Concordo com o tratamento dos dados desta contribuição conforme a{' '}
           <Link
             href="/sobre#privacidade"
-            className="text-primary underline-offset-2 hover:underline"
+            className="text-atlantico-mar-profundo underline-offset-2 hover:underline"
             target="_blank"
             rel="noopener noreferrer"
           >
             Política de Privacidade
           </Link>
-          , exclusivamente para subsidiar a revisão do Plano Diretor de
-          Tamandaré e a geração de relatório agregado para protocolo junto à
-          Prefeitura.
+          . Esta é uma plataforma cívica{' '}
+          <strong className="font-medium">independente</strong>, sem vínculo com
+          a Prefeitura ou qualquer órgão público. Minha contribuição ficará
+          pública em <code className="font-mono">/contribuicoes</code> e poderá
+          compor o documento independente que será protocolado, no nome do
+          desenvolvedor, como contribuição cidadã.
         </span>
       </label>
 

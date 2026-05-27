@@ -1,6 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, MessageSquare } from 'lucide-react';
-import { Countdown } from '@/components/countdown';
+import { ArrowRight, MessageSquare, Heart, AlertCircle } from 'lucide-react';
 import { PhotoHero } from '@/components/photo-hero';
 import { PlaceCard } from '@/components/place-card';
 import { getAggregates } from '@/lib/resultados/fetch';
@@ -17,9 +16,9 @@ export default async function HomePage() {
     <main className="flex min-h-screen flex-col">
       <PhotoHero
         photo={PHOTOS.carneirosCapela}
-        eyebrow="Revisão do Plano Diretor · até 31 mai 2026"
+        eyebrow="Iniciativa cidadã independente · sem vínculo institucional"
         title="O futuro de Tamandaré decidido com a sua gente."
-        description="Plataforma cívica pra você entender, opinar e acompanhar a revisão do Plano Diretor — em até 5 minutos pelo celular."
+        description="Plataforma criada voluntariamente por um morador pra que mais gente possa entender e contribuir com a revisão do Plano Diretor. Em 5 minutos pelo celular."
         actions={
           <>
             <HeroCTA
@@ -28,30 +27,78 @@ export default async function HomePage() {
               tone="primary"
             />
             <HeroCTA
-              href="/diagnostico"
-              label="Entender o diagnóstico"
+              href="/sobre"
+              label="Por que existe?"
               tone="ghost"
             />
           </>
         }
       />
 
-      {/* COUNTDOWN + LIVE STATS */}
+      {/* CARD MENSAGEM PESSOAL + STATS + STATUS DO CRONOGRAMA */}
       <section className="container mx-auto -mt-12 px-4 sm:-mt-16">
         <div className="mx-auto max-w-3xl rounded-2xl border border-border bg-card p-6 shadow-card sm:p-8">
-          <Countdown />
+          <div className="flex items-start gap-4">
+            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-atlantico-terracota/15 text-atlantico-terracota">
+              <Heart className="h-5 w-5" aria-hidden />
+            </div>
+            <div className="flex-1">
+              <p className="text-[11px] font-medium uppercase tracking-[0.15em] text-atlantico-terracota">
+                Por que essa plataforma existe
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-foreground sm:text-base">
+                Estive na primeira audiência pública e percebi que faltava uma
+                forma fácil pra qualquer pessoa <em>entender</em> o Plano
+                Diretor e <em>contribuir</em>. Como sou desenvolvedor, fiz essa
+                plataforma na semana seguinte — sem custo, sem vínculo
+                institucional, sem agenda política.
+              </p>
+              <p className="mt-2 text-xs text-muted-foreground">
+                — João Henrique Medeiros · Doutor Gigabyte ·{' '}
+                <Link
+                  href="/sobre"
+                  className="font-medium text-atlantico-mar-profundo underline-offset-2 hover:underline"
+                >
+                  mais sobre a iniciativa
+                </Link>
+              </p>
+            </div>
+          </div>
+
           {agg && agg.total > 0 && <LiveStats agg={agg} />}
+
+          <div className="mt-6 flex items-start gap-3 rounded-lg border border-atlantico-mar-raso/30 bg-atlantico-mar-raso/5 p-4">
+            <AlertCircle
+              className="h-4 w-4 flex-shrink-0 text-atlantico-mar-profundo"
+              aria-hidden
+            />
+            <p className="text-xs leading-relaxed text-foreground/85 sm:text-sm">
+              <strong className="font-medium">Cronograma em definição.</strong>{' '}
+              Na audiência de 26/05/2026, a Prefeitura sinalizou que vai
+              estabelecer um cronograma próprio de contribuições. Quando as
+              datas oficiais forem divulgadas, esta plataforma será atualizada.
+              Enquanto isso, suas contribuições continuam sendo registradas e
+              ficam públicas em{' '}
+              <Link
+                href="/contribuicoes"
+                className="font-medium text-atlantico-mar-profundo underline-offset-2 hover:underline"
+              >
+                /contribuicoes
+              </Link>
+              .
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* COMO FUNCIONA — 3 cards com foto */}
+      {/* COMO FUNCIONA */}
       <section className="container mx-auto px-4 py-20 sm:py-24">
         <div className="mx-auto mb-10 max-w-2xl text-center">
           <p className="text-xs font-medium uppercase tracking-[0.15em] text-atlantico-mar-profundo">
             Como funciona
           </p>
           <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Três passos. Cinco minutos. Sua voz no relatório oficial.
+            Três passos. Cinco minutos. Sua voz registrada e pública.
           </h2>
           <p className="mt-4 text-base text-muted-foreground">
             Você não precisa ler o Plano inteiro. A gente traduziu para você.
@@ -80,8 +127,8 @@ export default async function HomePage() {
           <PlaceCard
             photo={PHOTOS.pescadores}
             eyebrow="3 · Contribua"
-            title="Texto livre, voz oficial"
-            description="Anônimo se preferir. Geolocalizada, com hash de integridade. Entra no relatório protocolado."
+            title="Texto, áudio, foto — você escolhe"
+            description="Anônimo se preferir. Geolocalizada, com hash de integridade. Aparece pública em /contribuicoes."
             href="/contribuir"
             ctaLabel="Contribuir agora"
             tone="mata"
@@ -94,12 +141,12 @@ export default async function HomePage() {
             className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 text-sm text-foreground shadow-soft transition-colors hover:border-atlantico-mar-raso/50 hover:bg-muted/50"
           >
             <MessageSquare className="h-4 w-4 text-atlantico-mar-profundo" />
-            Ou pergunte direto pra IA — ela cita as páginas exatas do Plano
+            Ou pergunte direto pra IA — ela cita as páginas exatas dos documentos
           </Link>
         </div>
       </section>
 
-      {/* DIAGNÓSTICO TEASER — usando paleta nova */}
+      {/* DIAGNÓSTICO TEASER */}
       {teaser && (
         <section className="container mx-auto px-4 pb-20">
           <Link
@@ -142,16 +189,16 @@ export default async function HomePage() {
             Legislação e estudos técnicos
           </Link>
           <span className="text-border">·</span>
-          <Link href="/audiencia" className="hover:text-foreground">
-            A audiência de 26/05
-          </Link>
-          <span className="text-border">·</span>
           <Link href="/contribuicoes" className="hover:text-foreground">
             Todas as contribuições
           </Link>
           <span className="text-border">·</span>
           <Link href="/resultados" className="hover:text-foreground">
             Resultados ao vivo
+          </Link>
+          <span className="text-border">·</span>
+          <Link href="/audiencia" className="hover:text-foreground">
+            A audiência de 26/05
           </Link>
           <span className="text-border">·</span>
           <Link href="/sobre" className="hover:text-foreground">
@@ -163,11 +210,19 @@ export default async function HomePage() {
       <footer className="border-t border-border bg-card/50 py-8">
         <div className="container mx-auto flex flex-col items-center gap-3 px-4 text-center text-xs text-muted-foreground">
           <p>
-            Plataforma cívica independente. Desenvolvida pela{' '}
-            <span className="font-medium text-foreground">Doutor Gigabyte</span>{' '}
+            Iniciativa cidadã independente. Desenvolvida voluntariamente por{' '}
+            <Link
+              href="/sobre"
+              className="font-medium text-foreground underline-offset-2 hover:underline"
+            >
+              João Henrique Medeiros / Doutor Gigabyte
+            </Link>{' '}
             — 2026.
           </p>
-          <p>Sem viés partidário · LGPD compliant · Código aberto</p>
+          <p>
+            Sem vínculo com Prefeitura, Câmara, ICR ou qualquer órgão público ·
+            Sem viés partidário · LGPD compliant · Código aberto
+          </p>
           <p className="mt-2 text-[10px]">
             Fotos: Wikimedia Commons (CC BY / CC BY-SA). Créditos individuais
             sob cada imagem.
@@ -179,7 +234,7 @@ export default async function HomePage() {
 }
 
 // ---------------------------------------------------------------------------
-// LiveStats — embutido no card do hero
+// LiveStats
 // ---------------------------------------------------------------------------
 
 function LiveStats({

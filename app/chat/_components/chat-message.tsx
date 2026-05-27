@@ -51,7 +51,7 @@ export function ChatMessage({ message }: Props) {
               }}
               className="inline-flex items-center gap-1 text-xs text-primary hover:opacity-80"
             >
-              Transformar isso em contribuição oficial
+              Transformar isso em contribuição estruturada
               <ArrowRight className="h-3 w-3" />
             </Link>
           </div>

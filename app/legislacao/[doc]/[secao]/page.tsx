@@ -157,7 +157,7 @@ export default function DocSectionPage({
                   Tem opinião sobre este tema?
                 </p>
                 <h3 className="mt-2 font-display text-xl font-semibold leading-tight text-foreground sm:text-2xl">
-                  Sua contribuição entra no relatório oficial.
+                  Sua contribuição entra no documento independente que vou protocolar.
                 </h3>
                 <p className="mt-2 text-sm text-foreground/80 sm:text-base">
                   Não é preciso ler o Plano inteiro pra opinar — basta um

@@ -136,8 +136,7 @@ export default function IndicadorPage({ params }: PageProps) {
               Tem algo a dizer sobre {ind.short_title.toLowerCase()} em Tamandaré?
             </h3>
             <p className="mt-1 text-sm text-foreground/90">
-              Sua contribuição entra no relatório consolidado que vai pra
-              Prefeitura. Tem até <strong>31/05/2026</strong>.
+              Sua contribuição fica pública em /contribuicoes e entra no documento independente que será protocolado como contribuição cidadã (cronograma em definição pela Prefeitura).
             </p>
             <Link
               href={{
