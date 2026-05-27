@@ -1,26 +1,11 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import * as turf from '@turf/turf';
-import { ArrowRight, Locate, MapPin, AlertCircle, Loader2 } from 'lucide-react';
+import { ArrowRight, Locate, AlertCircle } from 'lucide-react';
+import { SvgMap } from './svg-map';
 import type { Macroarea } from '@/lib/zoneamento/macroareas';
-
-// Lazy-load do bundle pesado (Maps + deck.gl ≈ 300KB) — só baixa quando
-// o usuário tem NEXT_PUBLIC_GMAPS_FRONTEND_KEY configurada e o mapa vai
-// realmente renderizar. SSR=false porque deck.gl depende de WebGL.
-const RealMap = dynamic(() => import('./real-map'), {
-  ssr: false,
-  loading: () => (
-    <div className="flex h-[60vh] min-h-[400px] items-center justify-center lg:h-[640px]">
-      <div className="flex flex-col items-center gap-3 text-muted-foreground">
-        <Loader2 className="h-6 w-6 animate-spin" />
-        <p className="text-sm">Carregando mapa interativo…</p>
-      </div>
-    </div>
-  ),
-});
 
 type Props = {
   macroareas: Macroarea[];
@@ -30,9 +15,6 @@ export function MapShell({ macroareas }: Props) {
   const [selected, setSelected] = useState<string | null>(null);
   const [locating, setLocating] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
-
-  const apiKey = process.env.NEXT_PUBLIC_GMAPS_FRONTEND_KEY;
-  const hasMap = Boolean(apiKey && !apiKey.includes('REPLACE-ME'));
 
   // Detecta em qual macroárea o usuário está via HTML5 geolocation + Turf.
   const handleWhereAmI = () => {
@@ -81,18 +63,13 @@ export function MapShell({ macroareas }: Props) {
 
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_360px]">
-      {/* MAP / PLACEHOLDER */}
-      <div className="overflow-hidden rounded-2xl border border-border bg-muted/40">
-        {hasMap ? (
-          <RealMap
-            apiKey={apiKey!}
-            macroareas={macroareas}
-            selected={selected}
-            onSelect={setSelected}
-          />
-        ) : (
-          <MapPlaceholder />
-        )}
+      {/* MAP */}
+      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-soft">
+        <SvgMap
+          macroareas={macroareas}
+          selected={selected}
+          onSelect={setSelected}
+        />
       </div>
 
       {/* SIDEBAR */}
@@ -120,33 +97,6 @@ export function MapShell({ macroareas }: Props) {
           <MacroareaList macroareas={macroareas} onPick={setSelected} />
         )}
       </aside>
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// MapPlaceholder (quando GMAPS key não está configurada)
-// ---------------------------------------------------------------------------
-
-function MapPlaceholder() {
-  return (
-    <div className="flex h-[60vh] min-h-[400px] flex-col items-center justify-center gap-4 p-8 text-center lg:h-[640px]">
-      <MapPin className="h-12 w-12 text-border" />
-      <div>
-        <h3 className="text-lg font-semibold text-foreground">
-          Mapa interativo pronto pra ativar
-        </h3>
-        <p className="mt-2 max-w-md text-sm text-muted-foreground">
-          Adicione <code className="font-mono text-primary">NEXT_PUBLIC_GMAPS_FRONTEND_KEY</code>{' '}
-          em <code className="font-mono">.env.local</code> pra ver o mapa do
-          Google com as 10 macroáreas sobrepostas. As coordenadas atuais são
-          aproximação até a digitalização do mapa-síntese oficial.
-        </p>
-      </div>
-      <p className="text-xs text-muted-foreground/70">
-        Enquanto isso, navegue pelos cards ao lado ou use &quot;Em qual macroárea eu
-        moro?&quot;
-      </p>
     </div>
   );
 }
