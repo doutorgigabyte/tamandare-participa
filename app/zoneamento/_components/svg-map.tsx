@@ -2,7 +2,39 @@
 
 import { useMemo, useState } from 'react';
 import { geoMercator, geoPath } from 'd3-geo';
+import type { Feature, Geometry } from 'geojson';
 import type { Macroarea } from '@/lib/zoneamento/macroareas';
+
+/**
+ * Normaliza geometria que vem do seed (que tem Polygon padrão E MultiPolygon
+ * mal-formatado — cada "elemento" do MultiPolygon é um array de pontos em vez
+ * de array de anéis). Converte tudo pra MultiPolygon válido pelo GeoJSON spec.
+ */
+function normalizeGeometry(g: unknown): Geometry | null {
+  if (!g || typeof g !== 'object') return null;
+  const geom = g as { type?: string; coordinates?: unknown };
+
+  if (geom.type === 'Polygon' && Array.isArray(geom.coordinates)) {
+    // coordinates: [[[lng,lat], ...]]  (rings[points])
+    return { type: 'Polygon', coordinates: geom.coordinates as number[][][] };
+  }
+  if (geom.type === 'MultiPolygon' && Array.isArray(geom.coordinates)) {
+    // Seed bug: coordinates: [[lng,lat], ...][] (cada item é um array de pontos)
+    // Esperado: [[[[lng,lat],...]]] (multipolygon → polygons → rings → points)
+    // Convertemos cada item em um polygon com 1 ring exterior.
+    const looksMalformed = (geom.coordinates as unknown[]).every(
+      (p) => Array.isArray(p) && p.length > 0 && typeof (p as unknown[])[0] === 'object' && !Array.isArray(((p as unknown[])[0] as unknown[])[0]),
+    );
+    if (looksMalformed) {
+      return {
+        type: 'MultiPolygon',
+        coordinates: (geom.coordinates as number[][][]).map((points) => [points]),
+      };
+    }
+    return { type: 'MultiPolygon', coordinates: geom.coordinates as number[][][][] };
+  }
+  return null;
+}
 
 /**
  * SVG nativo renderizando os polígonos das 10 macroáreas — sem dependência
@@ -32,37 +64,44 @@ type Props = {
 export function SvgMap({ macroareas, selected, onSelect }: Props) {
   const [hovered, setHovered] = useState<string | null>(null);
 
-  const { projection, pathBuilder, validMacroareas } = useMemo(() => {
-    // Filtra macroáreas com geojson válido
-    const valid = macroareas.filter(
-      (m) =>
-        m.geojson?.type === 'Polygon'
-        && Array.isArray(m.geojson.coordinates)
-        && m.geojson.coordinates.length > 0,
-    );
+  const { projection, pathBuilder, validFeatures } = useMemo(() => {
+    // Normaliza geometrias (lida com Polygon e MultiPolygon malformado do seed)
+    const features: Array<Feature & { properties: { slug: string; color: string; name: string } }> = [];
+    for (const m of macroareas) {
+      const geom = normalizeGeometry(m.geojson);
+      if (!geom) continue;
+      features.push({
+        type: 'Feature',
+        properties: { slug: m.slug, color: m.display_color, name: m.name },
+        geometry: geom,
+      });
+    }
 
-    // Compõe FeatureCollection pra d3-geo calcular bounding box
     const featureCollection = {
       type: 'FeatureCollection' as const,
-      features: valid.map((m) => ({
-        type: 'Feature' as const,
-        properties: { slug: m.slug },
-        geometry: m.geojson,
-      })),
+      features,
     };
 
-    const proj = geoMercator().fitExtent(
-      [
-        [PADDING, PADDING],
-        [VIEWPORT_WIDTH - PADDING, VIEWPORT_HEIGHT - PADDING],
-      ],
-      featureCollection,
-    );
+    // Fallback projection se não houver features válidas (mostra Tamandaré centrado)
+    let proj;
+    try {
+      proj = features.length > 0
+        ? geoMercator().fitExtent(
+            [
+              [PADDING, PADDING],
+              [VIEWPORT_WIDTH - PADDING, VIEWPORT_HEIGHT - PADDING],
+            ],
+            featureCollection,
+          )
+        : geoMercator().center([-35.1031, -8.7553]).scale(50000).translate([VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT / 2]);
+    } catch {
+      proj = geoMercator().center([-35.1031, -8.7553]).scale(50000).translate([VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT / 2]);
+    }
 
     return {
       projection: proj,
       pathBuilder: geoPath(proj),
-      validMacroareas: valid,
+      validFeatures: features,
     };
   }, [macroareas]);
 
@@ -108,43 +147,43 @@ export function SvgMap({ macroareas, selected, onSelect }: Props) {
 
         {/* polígonos */}
         <g>
-          {validMacroareas.map((m) => {
-            const isSelected = selected === m.slug;
-            const isHovered = hovered === m.slug;
+          {validFeatures.map((feature) => {
+            const slug = feature.properties.slug;
+            const color = feature.properties.color;
+            const name = feature.properties.name;
+            const isSelected = selected === slug;
+            const isHovered = hovered === slug;
             const active = isSelected || isHovered;
-            const d = pathBuilder({
-              type: 'Feature',
-              properties: {},
-              geometry: m.geojson,
-            } as Parameters<typeof pathBuilder>[0]) ?? '';
 
-            // Centroide pra label
-            const centroid = pathBuilder.centroid({
-              type: 'Feature',
-              properties: {},
-              geometry: m.geojson,
-            } as Parameters<typeof pathBuilder>[0]);
+            let d = '';
+            let centroid: [number, number] | null = null;
+            try {
+              d = pathBuilder(feature) ?? '';
+              const c = pathBuilder.centroid(feature);
+              if (Number.isFinite(c[0]) && Number.isFinite(c[1])) {
+                centroid = [c[0], c[1]];
+              }
+            } catch {
+              // pula esse polygon
+            }
+            if (!d) return null;
 
             return (
-              <g key={m.slug}>
+              <g key={slug}>
                 <path
                   d={d}
-                  fill={m.display_color}
+                  fill={color}
                   fillOpacity={active ? 0.85 : 0.55}
                   stroke="#fff"
                   strokeWidth={isSelected ? 2.5 : 1.5}
                   className="cursor-pointer transition-[fill-opacity,stroke-width]"
-                  onClick={() => onSelect(m.slug)}
-                  onMouseEnter={() => setHovered(m.slug)}
+                  onClick={() => onSelect(slug)}
+                  onMouseEnter={() => setHovered(slug)}
                   onMouseLeave={() => setHovered(null)}
                   role="button"
-                  aria-label={m.name}
+                  aria-label={name}
                 />
-                {/* Label: só mostra na hover/seleção pra não poluir */}
-                {active
-                  && centroid
-                  && Number.isFinite(centroid[0])
-                  && Number.isFinite(centroid[1]) && (
+                {active && centroid && (
                   <g pointerEvents="none">
                     <rect
                       x={centroid[0] - 80}
@@ -163,7 +202,7 @@ export function SvgMap({ macroareas, selected, onSelect }: Props) {
                       fontWeight={500}
                       fill="#fff"
                     >
-                      {m.name.replace(
+                      {name.replace(
                         /^(?:Macroárea|Zona Especial) (?:de |dos? |Centro )?/,
                         '',
                       )}
