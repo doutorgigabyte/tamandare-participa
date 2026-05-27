@@ -90,7 +90,10 @@ export async function POST(req: NextRequest) {
       413,
     );
   }
-  const mime = (file.type || 'audio/webm').split(';')[0];
+  // Normaliza o mime: AssemblyAI rejeita "audio/webm;codecs=opus" — só aceita
+  // "audio/webm" puro. Tira o sufixo de codecs do Content-Type que o navegador
+  // gera (especialmente Chrome com MediaRecorder webm/opus).
+  const mime = (file.type || 'audio/webm').split(';')[0].trim();
   if (!ALLOWED_MIMES.includes(mime)) {
     return err(
       { error: 'unsupported_mime', detail: `Formato ${mime} não suportado.` },
@@ -116,7 +119,7 @@ export async function POST(req: NextRequest) {
   const { error: uploadErr } = await supabase.storage
     .from(BUCKET)
     .upload(path, buffer, {
-      contentType: file.type || 'audio/webm',
+      contentType: mime, // sem ";codecs=opus" — AssemblyAI rejeita
       upsert: false,
     });
 
