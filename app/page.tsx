@@ -138,8 +138,16 @@ export default async function HomePage() {
       {/* NAV SECUNDÁRIA */}
       <section className="container mx-auto px-4 pb-12">
         <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
+          <Link href="/legislacao" className="hover:text-foreground">
+            Legislação e estudos técnicos
+          </Link>
+          <span className="text-border">·</span>
           <Link href="/audiencia" className="hover:text-foreground">
             A audiência de 26/05
+          </Link>
+          <span className="text-border">·</span>
+          <Link href="/contribuicoes" className="hover:text-foreground">
+            Todas as contribuições
           </Link>
           <span className="text-border">·</span>
           <Link href="/resultados" className="hover:text-foreground">

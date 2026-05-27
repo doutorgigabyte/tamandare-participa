@@ -204,14 +204,24 @@ export async function POST(req: NextRequest) {
   const autoPublish = assessment.score >= AUTO_PUBLISH_THRESHOLD;
   const finalStatus: 'pending' | 'published' = autoPublish ? 'published' : 'pending';
 
+  // display_name pra lista pública: só primeiro nome de quem se identificou.
+  // Pessoas anônimas continuam null. Ninguém é exposto além do que a pessoa
+  // escolheu.
+  const displayName =
+    payload.identification.mode === 'identified'
+      ? payload.identification.name.trim().split(/\s+/)[0] || null
+      : null;
+
   const insertRow = {
     user_id: null, // MVP 1: sem Auth — sempre null
     is_anonymous: isAnonymous,
+    display_name: displayName,
     category: payload.category,
     macroarea_slug: payload.macroarea_slug,
     location: locationWkt, // PostGIS aceita WKT em colunas geography
     location_address: payload.location_address?.trim() || null,
     body: payload.body.trim(),
+    audio_url: payload.audio_url,
     sentiment: null,
     attachments: persistedAttachments,
     status: finalStatus,

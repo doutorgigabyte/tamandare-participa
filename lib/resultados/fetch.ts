@@ -12,14 +12,30 @@
 import 'server-only';
 import { createServiceClient } from '@/lib/supabase/server';
 
+export type AttachmentPublic = {
+  name: string;
+  size: number;
+  type: string;
+  /** URL pública se já há upload real; null no MVP 1 (stub). */
+  url?: string | null;
+};
+
 export type ContributionListItem = {
   id: string;
+  /** Primeiro nome de quem se identificou (público). Null quando anônimo. */
+  display_name: string | null;
   category: string;
   macroarea_slug: string | null;
+  location_address: string | null;
   body: string;
+  /** URL pública do áudio original (transparência total). Null se foi texto. */
+  audio_url: string | null;
+  attachments: AttachmentPublic[];
   status: 'pending' | 'published' | 'flagged' | 'spam';
   is_anonymous: boolean;
   created_at: string;
+  /** Hash de integridade truncado pra exibir como "ID público". */
+  hash_short: string | null;
 };
 
 export type Aggregates = {
@@ -60,7 +76,7 @@ export async function getAggregates(): Promise<Aggregates | null> {
     supabase
       .from('contributions')
       .select(
-        'id, category, macroarea_slug, body, status, is_anonymous, created_at',
+        'id, display_name, category, macroarea_slug, location_address, body, audio_url, attachments, status, is_anonymous, hash_integrity, created_at',
       )
       .in('status', VISIBLE_STATUSES as unknown as string[])
       .order('created_at', { ascending: false })
@@ -97,7 +113,96 @@ export async function getAggregates(): Promise<Aggregates | null> {
     published_count,
     by_macroarea,
     by_category,
-    recent: (recentRes.data ?? []) as ContributionListItem[],
+    recent: normalizeRows(recentRes.data ?? []),
     last_updated: new Date().toISOString(),
   };
+}
+
+// ---------------------------------------------------------------------------
+// Lista pública paginada — usada por /contribuicoes
+// ---------------------------------------------------------------------------
+
+const PAGE_SIZE_DEFAULT = 20;
+
+export type PublicListResult = {
+  items: ContributionListItem[];
+  total: number;
+  page: number;
+  pageSize: number;
+};
+
+export async function getPublishedContributions(
+  options: { page?: number; pageSize?: number; category?: string; macroareaSlug?: string } = {},
+): Promise<PublicListResult | null> {
+  if (!isSupabaseConfigured()) return null;
+  const page = Math.max(1, options.page ?? 1);
+  const pageSize = Math.min(50, Math.max(5, options.pageSize ?? PAGE_SIZE_DEFAULT));
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+
+  const supabase = createServiceClient();
+  let query = supabase
+    .from('contributions')
+    .select(
+      'id, display_name, category, macroarea_slug, location_address, body, audio_url, attachments, status, is_anonymous, hash_integrity, created_at',
+      { count: 'exact' },
+    )
+    .in('status', VISIBLE_STATUSES as unknown as string[])
+    .order('created_at', { ascending: false })
+    .range(from, to);
+
+  if (options.category) query = query.eq('category', options.category);
+  if (options.macroareaSlug) query = query.eq('macroarea_slug', options.macroareaSlug);
+
+  const { data, count, error } = await query;
+  if (error) {
+    // eslint-disable-next-line no-console
+    console.error('[contribuicoes] query falhou:', error);
+    return null;
+  }
+
+  return {
+    items: normalizeRows(data ?? []),
+    total: count ?? 0,
+    page,
+    pageSize,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+function normalizeRows(rows: unknown[]): ContributionListItem[] {
+  return rows.map((r) => {
+    const row = r as Record<string, unknown>;
+    const hash = row.hash_integrity as string | null;
+    return {
+      id: row.id as string,
+      display_name: (row.display_name as string | null) ?? null,
+      category: row.category as string,
+      macroarea_slug: (row.macroarea_slug as string | null) ?? null,
+      location_address: (row.location_address as string | null) ?? null,
+      body: row.body as string,
+      audio_url: (row.audio_url as string | null) ?? null,
+      attachments: normalizeAttachments(row.attachments),
+      status: row.status as ContributionListItem['status'],
+      is_anonymous: Boolean(row.is_anonymous),
+      created_at: row.created_at as string,
+      hash_short: hash ? hash.slice(0, 12) : null,
+    };
+  });
+}
+
+function normalizeAttachments(raw: unknown): AttachmentPublic[] {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .filter((a): a is Record<string, unknown> => typeof a === 'object' && a !== null)
+    .map((a) => ({
+      name: String(a.name ?? ''),
+      size: Number(a.size ?? 0),
+      type: String(a.type ?? ''),
+      url: (a.url as string | undefined) ?? (a.storage_path ? String(a.storage_path) : null),
+    }))
+    .filter((a) => a.name.length > 0);
 }
