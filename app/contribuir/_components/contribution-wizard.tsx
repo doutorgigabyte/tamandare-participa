@@ -294,6 +294,7 @@ export function ContributionWizard({
         : state.location_address.trim() || null,
       no_specific_location: state.no_specific_location,
       body: state.body.trim(),
+      audio_url: state.audio_url,
       attachments: state.attachments,
       identification:
         state.identification_mode === 'identified'
@@ -407,7 +408,8 @@ export function ContributionWizard({
         return (
           <StepBody
             value={state.body}
-            onChange={(body: string) => patch({ body })}
+            audioUrl={state.audio_url}
+            onChange={patch}
             errors={errors}
           />
         );

@@ -56,6 +56,8 @@ export type FormState = {
 
   // Etapa 4 — Texto da contribuição
   body: string;
+  /** URL pública do áudio original (se a contribuição veio de gravação). */
+  audio_url: string | null;
 
   // Etapa 5 — Anexos
   attachments: AttachmentMeta[];
@@ -77,6 +79,7 @@ export const INITIAL_FORM_STATE: FormState = {
   macroarea_slug: null,
   macroarea_unknown: false,
   body: '',
+  audio_url: null,
   attachments: [],
   identification_mode: null,
   identification_name: '',

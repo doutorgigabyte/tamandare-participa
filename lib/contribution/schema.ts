@@ -77,6 +77,7 @@ export const contributionPayloadSchema = z
       .trim()
       .min(50, 'Sua contribuição precisa ter pelo menos 50 caracteres.')
       .max(5000, 'Limite de 5000 caracteres por contribuição.'),
+    audio_url: z.string().url('URL de áudio inválida.').nullable().default(null),
     attachments: z
       .array(attachmentMetaSchema)
       .max(MAX_ATTACHMENTS, `Máximo de ${MAX_ATTACHMENTS} anexos.`),
