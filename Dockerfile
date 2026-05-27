@@ -61,8 +61,9 @@ USER nextjs
 
 EXPOSE 3000
 
-# Health check pra Coolify saber quando subiu
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD wget --quiet --spider http://localhost:3000/ || exit 1
+# Health check usa Node direto (wget do busybox não suporta --spider igual GNU).
+# 60s start-period dá folga pro Next.js carregar bundle inicial.
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=5 \
+  CMD node -e "fetch('http://localhost:3000/').then(r => process.exit(r.status < 500 ? 0 : 1)).catch(() => process.exit(1))" || exit 1
 
 CMD ["node", "server.js"]
