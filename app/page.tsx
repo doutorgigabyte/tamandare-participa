@@ -36,7 +36,7 @@ export default async function HomePage() {
       />
 
       {/* CARD MENSAGEM PESSOAL + STATS + STATUS DO CRONOGRAMA */}
-      <section className="container mx-auto -mt-12 px-4 sm:-mt-16">
+      <section className="container mx-auto px-4 pt-10 sm:pt-14">
         <div className="mx-auto max-w-3xl rounded-2xl border border-border bg-card p-6 shadow-card sm:p-8">
           <div className="flex items-start gap-4">
             <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-atlantico-terracota/15 text-atlantico-terracota">
