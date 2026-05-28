@@ -25,11 +25,14 @@ function ringIsCcw(ring: number[][]): boolean {
 function rewindGeometry(
   geom: Polygon | MultiPolygon,
 ): Polygon | MultiPolygon {
+  // d3-geo (Mercator projection) na prática espera outer rings em CLOCKWISE
+  // (não CCW como diz a RFC 7946 stricta). Empiricamente: outer rings CCW em
+  // d3-geo renderizam o complemento do mundo. Forçamos CW pros outer rings.
   const fixRing = (ring: number[][], isOuter: boolean): number[][] => {
     const ccw = ringIsCcw(ring);
-    // outer: CCW. inner: CW.
-    if (isOuter && !ccw) return ring.slice().reverse();
-    if (!isOuter && ccw) return ring.slice().reverse();
+    // outer: CW (área negativa). inner: CCW (área positiva).
+    if (isOuter && ccw) return ring.slice().reverse();
+    if (!isOuter && !ccw) return ring.slice().reverse();
     return ring;
   };
   if (geom.type === 'Polygon') {
