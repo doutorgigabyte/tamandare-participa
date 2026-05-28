@@ -21,7 +21,7 @@
       "name": "Macroárea de Lazer e Turismo",
       "display_color": "#663399",
       "description_plain": "Zona costeira voltada a empreendimentos turísticos e equipamentos de lazer. Inclui Praia dos Carneiros e Pontal.",
-      "description_official": "TODO: trecho literal da Circular 001-2026.",
+      "description_official": "Ocupação sustentável e baixas densidades, com reconhecimento da importância ambiental dos mangues e da borda do rio Ariquindá. Inclui Praia dos Carneiros e Pontal. (Circular 001-2026, p. 3)",
       "geojson": {
         "type": "Polygon",
         "coordinates": [
@@ -641,10 +641,11 @@
           ]
         ]
       },
-      "changes_from_current": "TODO: comparar com Plano Diretor de 2002.",
+      "changes_from_current": "O Plano vigente (Lei 184/2002) não tinha tratamento específico pra essa área como vetor turístico-ambiental integrado. A proposta reconhece a fragilidade do ecossistema (mangues + estuário do Ariquindá) e limita densidade pra evitar que empreendimentos turísticos descaracterizem o lugar.",
       "attention_points": [
-        "pressão imobiliária",
-        "preservação ambiental da orla"
+        "Definição de gabarito máximo das edificações adjacentes à praia (o Plano de 2002 permitia 4 pavimentos pra hotéis em Carneiros)",
+        "Compatibilização entre o uso turístico intensivo e a proteção dos mangues",
+        "Risco de pressão imobiliária acelerada após valorização da região"
       ]
     },
     {
@@ -652,7 +653,7 @@
       "name": "Macroárea Orla Carneiros 1",
       "display_color": "#87ceeb",
       "description_plain": "TODO",
-      "description_official": "",
+      "description_official": "Proteção paisagística e parametrização da ocupação ao longo da Praia dos Carneiros. Macroárea voltada à orla mais sensível ambientalmente. (Circular 001-2026, p. 3)",
       "geojson": {
         "type": "MultiPolygon",
         "coordinates": [
@@ -1130,10 +1131,12 @@
           ]
         ]
       },
-      "changes_from_current": "",
+      "changes_from_current": "A revisão propõe limitar significativamente o porte das edificações junto à faixa de praia. O estudo do ICR (p. 22 do Caderno) mostrou via simulação 3D que prédios de 4 pavimentos junto à praia sombreiam praticamente toda a faixa de areia no horário de pico turístico — daí o regime urbanístico mais restritivo.",
       "attention_points": [
-        "sombreamento da praia",
-        "altura de edificações"
+        "Altura máxima das edificações na primeira faixa junto à praia",
+        "Recuos obrigatórios em relação à linha de maré e à mata ciliar",
+        "Sombreamento da faixa de areia em horários de uso turístico",
+        "Proteção da Capela de São Benedito (1910) e seu entorno paisagístico"
       ]
     },
     {
@@ -1141,7 +1144,7 @@
       "name": "Macroárea Orla Carneiros 2",
       "display_color": "#4682b4",
       "description_plain": "TODO",
-      "description_official": "",
+      "description_official": "Proteção paisagística e parametrização da ocupação ao longo da Praia dos Carneiros. Continua o conjunto com Orla Carneiros 1, em transição com áreas de uso turístico mais intenso. (Circular 001-2026, p. 3)",
       "geojson": {
         "type": "Polygon",
         "coordinates": [
@@ -1749,10 +1752,11 @@
           ]
         ]
       },
-      "changes_from_current": "",
+      "changes_from_current": "Continuação do regime urbanístico restritivo da Orla 1, com possibilidade de gradação de altura permitida conforme a distância da praia. O Caderno ICR (p. 22) sugere essa gradação como forma de proteger a paisagem sem inviabilizar uso turístico-econômico.",
       "attention_points": [
-        "transição com APP",
-        "infraestrutura turística"
+        "Transição gradual de gabarito entre orla protegida e áreas de hotelaria",
+        "Manutenção da permeabilidade do solo pra drenagem natural",
+        "Estímulo a tipologias arquitetônicas integradas ao ambiente costeiro"
       ]
     },
     {
@@ -1760,7 +1764,7 @@
       "name": "Macroárea de Conservação Ambiental",
       "display_color": "#bedc6e",
       "description_plain": "Áreas de preservação — mangues, mata atlântica, faixa marginal de rios.",
-      "description_official": "",
+      "description_official": "Preservação dos ecossistemas estruturadores do território. Inclui Reserva Biológica de Saltinho (562ha de Mata Atlântica, Categoria IUCN Ia — proteção integral) e áreas correlatas. (Circular 001-2026, p. 3 + Caderno ICR)",
       "geojson": {
         "type": "Polygon",
         "coordinates": [
@@ -2100,9 +2104,11 @@
           ]
         ]
       },
-      "changes_from_current": "",
+      "changes_from_current": "A revisão consolida e amplia a proteção das áreas verdes que já tinham proteção em legislação federal/estadual (Reserva de Saltinho), trazendo essa proteção pro escopo do Plano Diretor municipal e integrando-a ao \"Sistema Municipal de Unidades Protegidas\" mencionado na Circular.",
       "attention_points": [
-        "APP de rios Ariquindá e Mamucabas"
+        "Ocupação irregular em áreas de borda da reserva",
+        "Conectividade entre Reserva de Saltinho e remanescentes urbanos de vegetação (corredores ecológicos)",
+        "Educação ambiental e fiscalização pra evitar desmatamento"
       ]
     },
     {
@@ -2110,7 +2116,7 @@
       "name": "Macroárea Orla Tamandaré",
       "display_color": "#ffc0cb",
       "description_plain": "TODO",
-      "description_official": "",
+      "description_official": "Qualificação da frente marítima urbana, com modulação de gabaritos e proteção do patrimônio histórico. Inclui a Praia de Tamandaré (sede) e o entorno da Igreja de São Pedro. (Circular 001-2026, p. 3)",
       "geojson": {
         "type": "MultiPolygon",
         "coordinates": [
@@ -3492,10 +3498,12 @@
           ]
         ]
       },
-      "changes_from_current": "",
+      "changes_from_current": "O Plano vigente não estabelecia estratégias claras pra valorizar o patrimônio edificado (Caderno ICR p. 23). A revisão introduz gabaritos modulados — mais baixos perto de prédios históricos, gradualmente mais altos conforme se afasta — pra que igrejas, forte e construções coloniais mantenham protagonismo na paisagem urbana.",
       "attention_points": [
-        "interface centro-praia",
-        "patrimônio cultural"
+        "Compatibilização entre novos empreendimentos e o entorno da Igreja de São Pedro",
+        "Calçadas e fachadas voltadas pra orla — incentivo à \"fachada ativa\"",
+        "Limite de altura das novas edificações junto ao mar",
+        "Mobilidade ativa (pedestre + ciclo) ao longo da orla"
       ]
     },
     {
@@ -3503,7 +3511,7 @@
       "name": "Macroárea Centro Tamandaré",
       "display_color": "#a51e32",
       "description_plain": "Centro histórico e comercial. Inclui Forte de Santo Inácio, Igreja S. Benedito, Igreja S. Inácio.",
-      "description_official": "",
+      "description_official": "Área destinada ao adensamento e ao uso misto, com estímulo à fachada ativa e à diversificação econômica. É o coração comercial e administrativo da cidade. (Circular 001-2026, p. 3)",
       "geojson": {
         "type": "Polygon",
         "coordinates": [
@@ -4559,10 +4567,12 @@
           ]
         ]
       },
-      "changes_from_current": "",
+      "changes_from_current": "O Plano de 2002 não tinha incentivos urbanísticos pra concentrar atividade econômica no centro. A revisão direciona o adensamento populacional e econômico pra cá — onde já existe infraestrutura instalada — em vez de espalhar pelas áreas frágeis. Estímulo à fachada ativa (térreo comercial conectado à calçada) busca animação urbana e segurança.",
       "attention_points": [
-        "patrimônio histórico",
-        "gabarito de altura"
+        "Gabaritos máximos que mantenham o entorno do Forte de Santo Inácio visível",
+        "Estacionamento e mobilidade — sem aumentar caos viário",
+        "Drenagem urbana (Caderno ICR p. 25 recomenda reduzir taxa de ocupação em áreas de alagamento)",
+        "Preservação de imóveis históricos remanescentes"
       ]
     },
     {
@@ -4570,7 +4580,7 @@
       "name": "Macroárea Social Morros",
       "display_color": "#ffd700",
       "description_plain": "Áreas residenciais em encostas. Foco em regularização fundiária.",
-      "description_official": "",
+      "description_official": "Regularização fundiária, qualificação habitacional e proteção ambiental nas áreas de encosta. Macroárea voltada a comunidades em ocupações consolidadas. (Circular 001-2026, p. 3)",
       "geojson": {
         "type": "MultiPolygon",
         "coordinates": [
@@ -7408,10 +7418,12 @@
           ]
         ]
       },
-      "changes_from_current": "",
+      "changes_from_current": "O Plano de 2002 não previa instrumentos específicos pra regularização nem pra qualificação habitacional em áreas de encosta. A revisão aplica ZEIS (Zonas Especiais de Interesse Social) implícitas e prevê regularização fundiária + melhorias habitacionais + proteção contra deslizamentos.",
       "attention_points": [
-        "declividade",
-        "regularização fundiária"
+        "Risco geotécnico em encostas durante chuvas intensas",
+        "Acesso a serviços urbanos básicos (água, esgoto, energia, transporte)",
+        "Regularização fundiária sem expulsão das famílias originárias",
+        "Habitação digna sem descaracterizar laços de vizinhança"
       ]
     },
     {
@@ -7419,7 +7431,7 @@
       "name": "Zona Especial de Mamucabinhas",
       "display_color": "#b46ec8",
       "description_plain": "TODO",
-      "description_official": "",
+      "description_official": "Zona Especial de Mamucabinhas — tratamento diferenciado das áreas rurais e dos núcleos distritais. Macroárea de transição entre o urbano consolidado e o rural. (Circular 001-2026, p. 3)",
       "geojson": {
         "type": "MultiPolygon",
         "coordinates": [
@@ -8509,10 +8521,12 @@
           ]
         ]
       },
-      "changes_from_current": "",
+      "changes_from_current": "O Plano de 2002 tratava áreas rurais de forma genérica. A revisão reconhece especificidades dos distritos rurais — produção agrícola familiar, ocupação dispersa, infraestrutura básica — e cria parâmetros próprios em vez de aplicar regras urbanas inadequadas.",
       "attention_points": [
-        "comunidades tradicionais",
-        "transição urbano-rural"
+        "Compatibilização entre uso rural e proteção dos rios Ariquindá e Mamucabas",
+        "Acesso a serviços públicos pra moradores dos distritos",
+        "Estímulo à produção rural sustentável",
+        "Controle de expansão urbana inadequada sobre área rural"
       ]
     },
     {
@@ -8520,7 +8534,7 @@
       "name": "Zona Especial dos Distritos Brejo e Sauê",
       "display_color": "#ff9966",
       "description_plain": "TODO",
-      "description_official": "",
+      "description_official": "Zona Especial do Distrito Brejo e Saué — tratamento diferenciado das áreas rurais e dos núcleos distritais. Macroárea predominantemente rural, com núcleos populacionais consolidados. (Circular 001-2026, p. 3)",
       "geojson": {
         "type": "MultiPolygon",
         "coordinates": [
@@ -9374,11 +9388,12 @@
           ]
         ]
       },
-      "changes_from_current": "",
+      "changes_from_current": "Mesmo regime da Zona Especial de Mamucabinhas: reconhecimento da especificidade rural-distrital e criação de parâmetros próprios em vez de aplicar regras urbanas. Foco em qualificar o núcleo do distrito sem descaracterizar sua identidade.",
       "attention_points": [
-        "distritos rurais",
-        "agricultura familiar",
-        "acesso a serviços urbanos"
+        "Saneamento básico no núcleo do distrito",
+        "Conectividade viária com a sede do município",
+        "Equipamentos básicos (escola, saúde, lazer) dimensionados pra demanda local",
+        "Apoio à atividade rural como vetor econômico"
       ]
     },
     {
@@ -9386,7 +9401,7 @@
       "name": "Macroárea de Uso Institucional",
       "display_color": "#5a5a5f",
       "description_plain": "TODO",
-      "description_official": "",
+      "description_official": "Concentração de equipamentos públicos e serviços coletivos. Abriga prédios da Prefeitura, escolas públicas, postos de saúde, ginásios e demais usos institucionais. (Circular 001-2026, p. 3)",
       "geojson": {
         "type": "MultiPolygon",
         "coordinates": [
@@ -10892,10 +10907,11 @@
           ]
         ]
       },
-      "changes_from_current": "",
+      "changes_from_current": "Reconhecimento formal do agrupamento dos equipamentos públicos numa macroárea própria, facilitando planejamento integrado (rotas escolares, atendimento de saúde, eventos cívicos).",
       "attention_points": [
-        "acessibilidade",
-        "distribuição territorial dos equipamentos"
+        "Acessibilidade universal nos prédios públicos",
+        "Integração entre as instalações pra otimizar recursos",
+        "Manutenção e modernização dos edifícios existentes"
       ]
     }
   ]
