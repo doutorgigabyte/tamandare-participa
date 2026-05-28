@@ -50,11 +50,16 @@ export function MapShell({ macroareas }: Props) {
               JSON.parse(JSON.stringify(m.geojson)),
               true,
             ) as typeof m.geojson;
-            const feature =
-              fixed.type === 'Polygon'
-                ? turf.polygon(fixed.coordinates)
-                : turf.multiPolygon(fixed.coordinates);
-            return turf.booleanPointInPolygon(point, feature);
+            if (fixed.type === 'Polygon') {
+              return turf.booleanPointInPolygon(
+                point,
+                turf.polygon(fixed.coordinates),
+              );
+            }
+            return turf.booleanPointInPolygon(
+              point,
+              turf.multiPolygon(fixed.coordinates),
+            );
           } catch {
             return false;
           }
