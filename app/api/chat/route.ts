@@ -32,8 +32,11 @@ import { createServiceClient } from '@/lib/supabase/server';
  *     sem gastar tokens do LLM.
  */
 
-const MATCH_THRESHOLD = 0.65;
-const MATCH_COUNT = 5;
+// Threshold baixo de propósito: perguntas curtas em PT-BR ("Onde fica X?")
+// têm embedding distante de blocos longos. Melhor mostrar 8 chunks possivelmente
+// menos relevantes e deixar a IA filtrar do que retornar fallback genérico.
+const MATCH_THRESHOLD = 0.4;
+const MATCH_COUNT = 8;
 const EXCERPT_LEN = 200;
 
 export const runtime = 'nodejs';
