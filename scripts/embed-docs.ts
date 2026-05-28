@@ -33,7 +33,7 @@ const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
 const SOURCE_FILTER = args
   .find((a) => a.startsWith('--source='))
-  ?.split('=')[1] as 'caderno' | 'circular' | undefined;
+  ?.split('=')[1] as 'caderno' | 'circular' | 'faq' | undefined;
 
 const SOURCES_DIR = join(process.cwd(), 'docs', 'sources');
 
@@ -53,7 +53,7 @@ const EMBEDDING_DIM = 768;
 // ---------------------------------------------------------------------------
 
 type Frontmatter = {
-  source: 'caderno' | 'circular';
+  source: 'caderno' | 'circular' | 'faq';
   title: string;
   section_slug: string;
   page_start: number;
@@ -79,7 +79,7 @@ type Chunk = {
 // ---------------------------------------------------------------------------
 
 async function listMarkdownFiles(): Promise<string[]> {
-  const sources = SOURCE_FILTER ? [SOURCE_FILTER] : ['caderno', 'circular'];
+  const sources = SOURCE_FILTER ? [SOURCE_FILTER] : ['caderno', 'circular', 'faq'];
   const all: string[] = [];
   for (const source of sources) {
     const dir = join(SOURCES_DIR, source);
