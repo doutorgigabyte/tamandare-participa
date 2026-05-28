@@ -1,11 +1,25 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import * as turf from '@turf/turf';
-import { ArrowRight, Locate, AlertCircle } from 'lucide-react';
-import { SvgMap } from './svg-map';
+import { ArrowRight, Locate, AlertCircle, Loader2 } from 'lucide-react';
 import type { Macroarea } from '@/lib/zoneamento/macroareas';
+
+// SVG map só roda no client — evita hydration mismatch quando o d3-geo
+// gera paths diferentes entre SSR e CSR.
+const SvgMap = dynamic(() => import('./svg-map').then((m) => m.SvgMap), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-[60vh] min-h-[420px] items-center justify-center bg-atlantico-areia-quente/30 lg:h-[640px]">
+      <div className="flex flex-col items-center gap-3 text-muted-foreground">
+        <Loader2 className="h-6 w-6 animate-spin" aria-hidden />
+        <p className="text-sm">Carregando mapa…</p>
+      </div>
+    </div>
+  ),
+});
 
 type Props = {
   macroareas: Macroarea[];
