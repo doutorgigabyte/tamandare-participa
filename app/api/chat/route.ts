@@ -141,6 +141,8 @@ export async function POST(req: NextRequest) {
 
   // 4. Match chunks
   const supabase = createServiceClient();
+  // eslint-disable-next-line no-console
+  console.log(`[chat] embedding dim=${queryEmbedding.length}, threshold=${MATCH_THRESHOLD}, count=${MATCH_COUNT}, query="${input.message.slice(0, 60)}"`);
   const { data: chunks, error: matchErr } = await supabase.rpc('match_chunks', {
     query_embedding: queryEmbedding as unknown as string,
     match_threshold: MATCH_THRESHOLD,
@@ -155,6 +157,8 @@ export async function POST(req: NextRequest) {
       500,
     );
   }
+  // eslint-disable-next-line no-console
+  console.log(`[chat] match returned ${chunks?.length ?? 0} chunks`);
 
   const retrievedChunks: RetrievedChunk[] = (chunks ?? []).map((c: {
     id: number;
