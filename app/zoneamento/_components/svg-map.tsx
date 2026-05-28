@@ -6,6 +6,47 @@ import type { Feature, Polygon, MultiPolygon } from 'geojson';
 import type { Macroarea } from '@/lib/zoneamento/macroareas';
 
 /**
+ * Corrige winding order dos polígonos. RFC 7946 (GeoJSON) exige outer rings
+ * em counter-clockwise (CCW) e inner rings (buracos) em clockwise (CW).
+ * d3-geo segue a spec, então rings invertidos viram "complemento do mundo".
+ * O seed das macroáreas tem winding CW nos outer rings (comum em
+ * ferramentas que não seguem RFC 7946) — precisa rewind aqui no client.
+ */
+function ringIsCcw(ring: number[][]): boolean {
+  if (ring.length < 3) return true;
+  let area = 0;
+  for (let i = 0, n = ring.length; i < n; i++) {
+    const j = (i + 1) % n;
+    area += ring[i][0] * ring[j][1] - ring[j][0] * ring[i][1];
+  }
+  return area > 0;
+}
+
+function rewindGeometry(
+  geom: Polygon | MultiPolygon,
+): Polygon | MultiPolygon {
+  const fixRing = (ring: number[][], isOuter: boolean): number[][] => {
+    const ccw = ringIsCcw(ring);
+    // outer: CCW. inner: CW.
+    if (isOuter && !ccw) return ring.slice().reverse();
+    if (!isOuter && ccw) return ring.slice().reverse();
+    return ring;
+  };
+  if (geom.type === 'Polygon') {
+    return {
+      type: 'Polygon',
+      coordinates: geom.coordinates.map((ring, i) => fixRing(ring, i === 0)),
+    };
+  }
+  return {
+    type: 'MultiPolygon',
+    coordinates: geom.coordinates.map((poly) =>
+      poly.map((ring, i) => fixRing(ring, i === 0)),
+    ),
+  };
+}
+
+/**
  * SVG nativo renderizando os polígonos das 10 macroáreas — sem dependência
  * de Google Maps key. Usa d3-geo pra projeção Mercator.
  *
@@ -48,7 +89,7 @@ export function SvgMap({ macroareas, selected, onSelect }: Props) {
       features.push({
         type: 'Feature',
         properties: { slug: m.slug, color: m.display_color, name: m.name },
-        geometry: geom,
+        geometry: rewindGeometry(geom),
       });
     }
 
