@@ -2,51 +2,22 @@
 
 import { useMemo, useState } from 'react';
 import { geoMercator, geoPath } from 'd3-geo';
+import rewind from '@mapbox/geojson-rewind';
 import type { Feature, Polygon, MultiPolygon } from 'geojson';
 import type { Macroarea } from '@/lib/zoneamento/macroareas';
 
 /**
- * Corrige winding order dos polígonos. RFC 7946 (GeoJSON) exige outer rings
- * em counter-clockwise (CCW) e inner rings (buracos) em clockwise (CW).
- * d3-geo segue a spec, então rings invertidos viram "complemento do mundo".
- * O seed das macroáreas tem winding CW nos outer rings (comum em
- * ferramentas que não seguem RFC 7946) — precisa rewind aqui no client.
+ * Corrige winding order dos polígonos. d3-geo trata polygons com winding
+ * "errado" como buracos no mundo todo (geoArea retorna 4π em vez de área
+ * real do polygon). Confirmado experimentalmente:
+ *   - Original do seed: geoArea = 12.566 (4π = esfera inteira)
+ *   - Após rewind(true): geoArea = 1.87e-7 (área real)
+ *
+ * `rewind(geom, true)` força right-hand rule (outer = clockwise quando visto
+ * com norte pra cima), o que é o que d3-geo espera.
  */
-function ringIsCcw(ring: number[][]): boolean {
-  if (ring.length < 3) return true;
-  let area = 0;
-  for (let i = 0, n = ring.length; i < n; i++) {
-    const j = (i + 1) % n;
-    area += ring[i][0] * ring[j][1] - ring[j][0] * ring[i][1];
-  }
-  return area > 0;
-}
-
-function rewindGeometry(
-  geom: Polygon | MultiPolygon,
-): Polygon | MultiPolygon {
-  // d3-geo (Mercator projection) na prática espera outer rings em CLOCKWISE
-  // (não CCW como diz a RFC 7946 stricta). Empiricamente: outer rings CCW em
-  // d3-geo renderizam o complemento do mundo. Forçamos CW pros outer rings.
-  const fixRing = (ring: number[][], isOuter: boolean): number[][] => {
-    const ccw = ringIsCcw(ring);
-    // outer: CW (área negativa). inner: CCW (área positiva).
-    if (isOuter && ccw) return ring.slice().reverse();
-    if (!isOuter && !ccw) return ring.slice().reverse();
-    return ring;
-  };
-  if (geom.type === 'Polygon') {
-    return {
-      type: 'Polygon',
-      coordinates: geom.coordinates.map((ring, i) => fixRing(ring, i === 0)),
-    };
-  }
-  return {
-    type: 'MultiPolygon',
-    coordinates: geom.coordinates.map((poly) =>
-      poly.map((ring, i) => fixRing(ring, i === 0)),
-    ),
-  };
+function fixWinding<G extends Polygon | MultiPolygon>(geom: G): G {
+  return rewind(geom, true) as G;
 }
 
 /**
@@ -92,7 +63,7 @@ export function SvgMap({ macroareas, selected, onSelect }: Props) {
       features.push({
         type: 'Feature',
         properties: { slug: m.slug, color: m.display_color, name: m.name },
-        geometry: rewindGeometry(geom),
+        geometry: fixWinding(geom),
       });
     }
 

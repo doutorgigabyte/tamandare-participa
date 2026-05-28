@@ -28,6 +28,7 @@
     "@google/earthengine": "1.4.4",
     "@google/generative-ai": "0.21.0",
     "@googlemaps/three": "4.0.13",
+    "@mapbox/geojson-rewind": "^0.5.2",
     "@react-three/fiber": "8.17.10",
     "@supabase/ssr": "0.5.1",
     "@supabase/supabase-js": "2.45.6",
