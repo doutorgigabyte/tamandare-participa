@@ -121,8 +121,12 @@ comment on table document_chunks is
   'Chunks dos documentos oficiais com embeddings pra RAG. PRD v1.0 §6 + §7. '
   'scripts/embed-docs.ts faz upsert via unique(source, section, chunk_index).';
 
-create index if not exists idx_chunks_embedding
-  on document_chunks using ivfflat (embedding vector_cosine_ops);
+-- Sem índice ANN (ivfflat/hnsw) por enquanto: com <10k chunks, full scan
+-- é trivialmente rápido (~50ms) e SEMPRE preciso. ivfflat com poucas linhas
+-- e probes=1 (default) clusteriza mal e retorna 0 rows pra queries cujo
+-- centroid não contém matches — bug que tornou /api/chat inútil pra metade
+-- das perguntas até descobrirmos a causa. Voltar a indexar quando passarmos
+-- de ~10k chunks; nesse momento usar hnsw (m=16, ef_construction=64).
 create index if not exists idx_chunks_source on document_chunks(source);
 
 -- -----------------------------------------------------------------------------
