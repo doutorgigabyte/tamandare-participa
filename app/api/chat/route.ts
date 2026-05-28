@@ -142,7 +142,7 @@ export async function POST(req: NextRequest) {
   // 4. Match chunks
   const supabase = createServiceClient();
   // eslint-disable-next-line no-console
-  console.log(`[chat] embedding dim=${queryEmbedding.length}, threshold=${MATCH_THRESHOLD}, count=${MATCH_COUNT}, query="${input.message.slice(0, 60)}"`);
+  console.log(`[chat] embedding dim=${queryEmbedding.length}, threshold=${MATCH_THRESHOLD}, count=${MATCH_COUNT}, query="${input.message.slice(0, 60)}", svc_key_suffix=${(process.env.SUPABASE_SERVICE_ROLE_KEY ?? '').slice(-12)}, url=${process.env.NEXT_PUBLIC_SUPABASE_URL}, vec0=${queryEmbedding[0]}`);
   // supabase-js aceita array crú de números — internamente serializa
   // corretamente pro tipo vector(768) do pgvector. Passar como string
   // `[v1,v2,...]` parece quebrar em alguns runtimes (testado: array funciona).
