@@ -11,10 +11,9 @@
 
 import seed from '@/db/seed/macroareas.example.json';
 
-export type MacroareaPolygon = {
-  type: 'Polygon';
-  coordinates: number[][][];
-};
+export type MacroareaPolygon =
+  | { type: 'Polygon'; coordinates: number[][][] }
+  | { type: 'MultiPolygon'; coordinates: number[][][][] };
 
 export type Macroarea = {
   slug: string;

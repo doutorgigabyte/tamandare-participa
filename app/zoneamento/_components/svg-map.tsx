@@ -2,53 +2,17 @@
 
 import { useMemo, useState } from 'react';
 import { geoMercator, geoPath } from 'd3-geo';
-import type { Feature, Geometry } from 'geojson';
+import type { Feature, Polygon, MultiPolygon } from 'geojson';
 import type { Macroarea } from '@/lib/zoneamento/macroareas';
 
 /**
- * Normaliza geometria que vem do seed (que tem Polygon padrão E MultiPolygon
- * mal-formatado — cada "elemento" do MultiPolygon é um array de pontos em vez
- * de array de anéis). Converte tudo pra MultiPolygon válido pelo GeoJSON spec.
- */
-function normalizeGeometry(g: unknown): Geometry | null {
-  if (!g || typeof g !== 'object') return null;
-  const geom = g as { type?: string; coordinates?: unknown };
-
-  if (geom.type === 'Polygon' && Array.isArray(geom.coordinates)) {
-    // coordinates: [[[lng,lat], ...]]  (rings[points])
-    return { type: 'Polygon', coordinates: geom.coordinates as number[][][] };
-  }
-  if (geom.type === 'MultiPolygon' && Array.isArray(geom.coordinates)) {
-    // Seed bug: coordinates: [[lng,lat], ...][] (cada item é um array de pontos)
-    // Esperado: [[[[lng,lat],...]]] (multipolygon → polygons → rings → points)
-    // Convertemos cada item em um polygon com 1 ring exterior.
-    const looksMalformed = (geom.coordinates as unknown[]).every(
-      (p) => Array.isArray(p) && p.length > 0 && typeof (p as unknown[])[0] === 'object' && !Array.isArray(((p as unknown[])[0] as unknown[])[0]),
-    );
-    if (looksMalformed) {
-      return {
-        type: 'MultiPolygon',
-        coordinates: (geom.coordinates as number[][][]).map((points) => [points]),
-      };
-    }
-    return { type: 'MultiPolygon', coordinates: geom.coordinates as number[][][][] };
-  }
-  return null;
-}
-
-/**
  * SVG nativo renderizando os polígonos das 10 macroáreas — sem dependência
- * de Google Maps key. Usa d3-geo pra projeção Mercator e calcula bounding
- * box automaticamente pra encaixar todos os polígonos no viewport.
+ * de Google Maps key. Usa d3-geo pra projeção Mercator.
  *
- * Vantagens vs Google Maps:
- *   - Zero dependência externa (sem key, sem custo, sem rate limit)
- *   - Bundle ~10x menor
- *   - Funciona offline
- *   - Renderiza mais rápido (sem tiles)
- *
- * Trade-off: sem ruas/satélite ao fundo. Mas pra mostrar zoneamento, esse
- * "ruído" geográfico atrapalha — o que importa é a forma + cor dos polígonos.
+ * O seed (db/seed/macroareas.example.json) tem mix de Polygon (4) e
+ * MultiPolygon (6) — ambos formatos GeoJSON válidos. Aqui a gente confia no
+ * payload e só guarda defensivamente em try/catch quando d3-geo processa cada
+ * feature.
  */
 
 const VIEWPORT_WIDTH = 800;
@@ -61,15 +25,26 @@ type Props = {
   onSelect: (slug: string) => void;
 };
 
+type MacroFeature = Feature<Polygon | MultiPolygon, {
+  slug: string;
+  color: string;
+  name: string;
+}>;
+
 export function SvgMap({ macroareas, selected, onSelect }: Props) {
   const [hovered, setHovered] = useState<string | null>(null);
 
   const { projection, pathBuilder, validFeatures } = useMemo(() => {
-    // Normaliza geometrias (lida com Polygon e MultiPolygon malformado do seed)
-    const features: Array<Feature & { properties: { slug: string; color: string; name: string } }> = [];
+    // Compõe FeatureCollection a partir do seed — confia no formato GeoJSON
+    const features: MacroFeature[] = [];
     for (const m of macroareas) {
-      const geom = normalizeGeometry(m.geojson);
-      if (!geom) continue;
+      const geom = m.geojson as unknown as Polygon | MultiPolygon;
+      if (!geom || (geom.type !== 'Polygon' && geom.type !== 'MultiPolygon')) {
+        continue;
+      }
+      if (!Array.isArray(geom.coordinates) || geom.coordinates.length === 0) {
+        continue;
+      }
       features.push({
         type: 'Feature',
         properties: { slug: m.slug, color: m.display_color, name: m.name },
@@ -77,25 +52,25 @@ export function SvgMap({ macroareas, selected, onSelect }: Props) {
       });
     }
 
-    const featureCollection = {
-      type: 'FeatureCollection' as const,
-      features,
-    };
+    const collection = { type: 'FeatureCollection' as const, features };
 
-    // Fallback projection se não houver features válidas (mostra Tamandaré centrado)
+    // Auto-fit em todos os features juntos. Se fitExtent falhar (geometrias
+    // inválidas), cai pra projeção fixa centrada em Tamandaré com scale
+    // calibrado pro município inteiro caber.
     let proj;
     try {
-      proj = features.length > 0
-        ? geoMercator().fitExtent(
-            [
-              [PADDING, PADDING],
-              [VIEWPORT_WIDTH - PADDING, VIEWPORT_HEIGHT - PADDING],
-            ],
-            featureCollection,
-          )
-        : geoMercator().center([-35.1031, -8.7553]).scale(50000).translate([VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT / 2]);
+      proj = geoMercator().fitExtent(
+        [
+          [PADDING, PADDING],
+          [VIEWPORT_WIDTH - PADDING, VIEWPORT_HEIGHT - PADDING],
+        ],
+        collection,
+      );
     } catch {
-      proj = geoMercator().center([-35.1031, -8.7553]).scale(50000).translate([VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT / 2]);
+      proj = geoMercator()
+        .center([-35.13, -8.76])
+        .scale(110000)
+        .translate([VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT / 2]);
     }
 
     return {
@@ -104,6 +79,17 @@ export function SvgMap({ macroareas, selected, onSelect }: Props) {
       validFeatures: features,
     };
   }, [macroareas]);
+
+  // Ordena pra desenhar polygons "grandes" primeiro e "pequenos" por cima
+  // (evita que centro-tamandare cubra orla pequena, etc.). Usa o número de
+  // pontos como proxy de tamanho — quanto mais pontos, geralmente mais área.
+  const featuresOrdered = useMemo(() => {
+    return [...validFeatures].sort((a, b) => {
+      const sizeA = countPoints(a.geometry);
+      const sizeB = countPoints(b.geometry);
+      return sizeB - sizeA; // maior primeiro (renderizado por baixo)
+    });
+  }, [validFeatures]);
 
   return (
     <div className="relative h-[60vh] min-h-[420px] w-full overflow-hidden bg-atlantico-areia-quente/40 lg:h-[640px]">
@@ -114,7 +100,7 @@ export function SvgMap({ macroareas, selected, onSelect }: Props) {
         role="img"
         aria-label="Mapa das 10 macroáreas propostas pra Tamandaré"
       >
-        {/* fundo sutil */}
+        {/* fundo */}
         <rect
           x={0}
           y={0}
@@ -123,31 +109,9 @@ export function SvgMap({ macroareas, selected, onSelect }: Props) {
           fill="hsl(34 71% 96%)"
         />
 
-        {/* grid de referência (linhas suaves) */}
-        <g stroke="hsl(34 25% 88%)" strokeWidth={0.5} opacity={0.5}>
-          {[1, 2, 3].map((i) => (
-            <line
-              key={`v${i}`}
-              x1={(VIEWPORT_WIDTH / 4) * i}
-              y1={0}
-              x2={(VIEWPORT_WIDTH / 4) * i}
-              y2={VIEWPORT_HEIGHT}
-            />
-          ))}
-          {[1, 2].map((i) => (
-            <line
-              key={`h${i}`}
-              x1={0}
-              y1={(VIEWPORT_HEIGHT / 3) * i}
-              x2={VIEWPORT_WIDTH}
-              y2={(VIEWPORT_HEIGHT / 3) * i}
-            />
-          ))}
-        </g>
-
         {/* polígonos */}
         <g>
-          {validFeatures.map((feature) => {
+          {featuresOrdered.map((feature) => {
             const slug = feature.properties.slug;
             const color = feature.properties.color;
             const name = feature.properties.name;
@@ -164,7 +128,7 @@ export function SvgMap({ macroareas, selected, onSelect }: Props) {
                 centroid = [c[0], c[1]];
               }
             } catch {
-              // pula esse polygon
+              return null;
             }
             if (!d) return null;
 
@@ -173,9 +137,9 @@ export function SvgMap({ macroareas, selected, onSelect }: Props) {
                 <path
                   d={d}
                   fill={color}
-                  fillOpacity={active ? 0.85 : 0.55}
+                  fillOpacity={active ? 0.85 : 0.6}
                   stroke="#fff"
-                  strokeWidth={isSelected ? 2.5 : 1.5}
+                  strokeWidth={isSelected ? 2.5 : 1.2}
                   className="cursor-pointer transition-[fill-opacity,stroke-width]"
                   onClick={() => onSelect(slug)}
                   onMouseEnter={() => setHovered(slug)}
@@ -202,10 +166,7 @@ export function SvgMap({ macroareas, selected, onSelect }: Props) {
                       fontWeight={500}
                       fill="#fff"
                     >
-                      {name.replace(
-                        /^(?:Macroárea|Zona Especial) (?:de |dos? |Centro )?/,
-                        '',
-                      )}
+                      {shortName(name)}
                     </text>
                   </g>
                 )}
@@ -214,26 +175,26 @@ export function SvgMap({ macroareas, selected, onSelect }: Props) {
           })}
         </g>
 
-        {/* Marcadores de referência: centro de Tamandaré */}
+        {/* Marcador "Sede" — fica acima dos polígonos */}
         {(() => {
-          const centerPoint = projection([-35.1031, -8.7553]);
-          if (!centerPoint) return null;
+          const p = projection([-35.1031, -8.7553]);
+          if (!p) return null;
           return (
             <g pointerEvents="none">
               <circle
-                cx={centerPoint[0]}
-                cy={centerPoint[1]}
+                cx={p[0]}
+                cy={p[1]}
                 r={4}
                 fill="hsl(207 31% 15%)"
                 stroke="#fff"
                 strokeWidth={1.5}
               />
               <text
-                x={centerPoint[0] + 8}
-                y={centerPoint[1] + 4}
+                x={p[0] + 8}
+                y={p[1] + 4}
                 fontSize={10}
                 fill="hsl(207 31% 15%)"
-                fontWeight={500}
+                fontWeight={600}
               >
                 Sede
               </text>
@@ -242,11 +203,28 @@ export function SvgMap({ macroareas, selected, onSelect }: Props) {
         })()}
       </svg>
 
-      {/* Aviso de aproximação no canto */}
-      <div className="absolute bottom-2 right-2 max-w-[280px] rounded-md bg-white/90 px-2.5 py-1.5 text-[10px] leading-snug text-muted-foreground shadow-soft backdrop-blur-sm">
-        Mapa esquemático. Polígonos são aproximação visual até a digitalização
-        do mapa-síntese oficial.
+      <div className="absolute bottom-2 right-2 max-w-[260px] rounded-md bg-white/90 px-2.5 py-1.5 text-[10px] leading-snug text-muted-foreground shadow-soft backdrop-blur-sm">
+        Mapa esquemático. {validFeatures.length} de {macroareas.length} macroáreas
+        renderizadas (polígonos são aproximação visual).
       </div>
     </div>
+  );
+}
+
+function shortName(name: string): string {
+  return name.replace(
+    /^(?:Macroárea|Zona Especial) (?:de |dos? |Centro )?/,
+    '',
+  );
+}
+
+function countPoints(geom: Polygon | MultiPolygon): number {
+  if (geom.type === 'Polygon') {
+    return geom.coordinates.reduce((acc, ring) => acc + ring.length, 0);
+  }
+  return geom.coordinates.reduce(
+    (acc, poly) =>
+      acc + poly.reduce((subAcc, ring) => subAcc + ring.length, 0),
+    0,
   );
 }

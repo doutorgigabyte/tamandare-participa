@@ -29,8 +29,12 @@ export function MapShell({ macroareas }: Props) {
         const point = turf.point([pos.coords.longitude, pos.coords.latitude]);
         const found = macroareas.find((m) => {
           try {
-            const poly = turf.polygon(m.geojson.coordinates);
-            return turf.booleanPointInPolygon(point, poly);
+            if (m.geojson.type === 'Polygon') {
+              const poly = turf.polygon(m.geojson.coordinates);
+              return turf.booleanPointInPolygon(point, poly);
+            }
+            const multi = turf.multiPolygon(m.geojson.coordinates);
+            return turf.booleanPointInPolygon(point, multi);
           } catch {
             return false;
           }
