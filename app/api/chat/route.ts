@@ -141,14 +141,13 @@ export async function POST(req: NextRequest) {
 
   // 4. Match chunks
   const supabase = createServiceClient();
-  // Serializa explicitamente como string `[v1,v2,...]` — formato que pgvector
-  // aceita. Em prod (docker/node), passar array crú via supabase-js às vezes
-  // serializa de forma incompatível com a coluna vector(768).
-  const queryEmbeddingStr = `[${queryEmbedding.join(',')}]`;
   // eslint-disable-next-line no-console
-  console.log(`[chat] embedding dim=${queryEmbedding.length}, str_len=${queryEmbeddingStr.length}, threshold=${MATCH_THRESHOLD}, count=${MATCH_COUNT}, query="${input.message.slice(0, 60)}"`);
+  console.log(`[chat] embedding dim=${queryEmbedding.length}, threshold=${MATCH_THRESHOLD}, count=${MATCH_COUNT}, query="${input.message.slice(0, 60)}"`);
+  // supabase-js aceita array crú de números — internamente serializa
+  // corretamente pro tipo vector(768) do pgvector. Passar como string
+  // `[v1,v2,...]` parece quebrar em alguns runtimes (testado: array funciona).
   const { data: chunks, error: matchErr } = await supabase.rpc('match_chunks', {
-    query_embedding: queryEmbeddingStr,
+    query_embedding: queryEmbedding as unknown as string,
     match_threshold: MATCH_THRESHOLD,
     match_count: MATCH_COUNT,
   });
