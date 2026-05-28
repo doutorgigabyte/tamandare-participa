@@ -182,31 +182,6 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* NAV SECUNDÁRIA */}
-      <section className="container mx-auto px-4 pb-12">
-        <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
-          <Link href="/legislacao" className="hover:text-foreground">
-            Legislação e estudos técnicos
-          </Link>
-          <span className="text-border">·</span>
-          <Link href="/contribuicoes" className="hover:text-foreground">
-            Todas as contribuições
-          </Link>
-          <span className="text-border">·</span>
-          <Link href="/resultados" className="hover:text-foreground">
-            Resultados ao vivo
-          </Link>
-          <span className="text-border">·</span>
-          <Link href="/audiencia" className="hover:text-foreground">
-            A audiência de 26/05
-          </Link>
-          <span className="text-border">·</span>
-          <Link href="/sobre" className="hover:text-foreground">
-            Sobre a plataforma
-          </Link>
-        </div>
-      </section>
-
       <footer className="border-t border-border bg-card/50 py-8">
         <div className="container mx-auto flex flex-col items-center gap-3 px-4 text-center text-xs text-muted-foreground">
           <p>

@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import * as turf from '@turf/turf';
+import rewind from '@mapbox/geojson-rewind';
 import { ArrowRight, Locate, AlertCircle, Loader2 } from 'lucide-react';
 import type { Macroarea } from '@/lib/zoneamento/macroareas';
 
@@ -43,12 +44,17 @@ export function MapShell({ macroareas }: Props) {
         const point = turf.point([pos.coords.longitude, pos.coords.latitude]);
         const found = macroareas.find((m) => {
           try {
-            if (m.geojson.type === 'Polygon') {
-              const poly = turf.polygon(m.geojson.coordinates);
-              return turf.booleanPointInPolygon(point, poly);
-            }
-            const multi = turf.multiPolygon(m.geojson.coordinates);
-            return turf.booleanPointInPolygon(point, multi);
+            // turf espera GeoJSON com winding correto — aplicar mesmo rewind
+            // que o SvgMap usa pra renderizar (right-hand rule).
+            const fixed = rewind(
+              JSON.parse(JSON.stringify(m.geojson)),
+              true,
+            ) as typeof m.geojson;
+            const feature =
+              fixed.type === 'Polygon'
+                ? turf.polygon(fixed.coordinates)
+                : turf.multiPolygon(fixed.coordinates);
+            return turf.booleanPointInPolygon(point, feature);
           } catch {
             return false;
           }

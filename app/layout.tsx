@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, Fraunces } from 'next/font/google';
 import { Toaster } from 'sonner';
+import { SiteHeader } from '@/components/site-header';
 import './globals.css';
 
 const inter = Inter({
@@ -43,6 +44,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`${inter.variable} ${fraunces.variable}`}>
       <body className="min-h-screen bg-background font-sans text-foreground antialiased">
+        <SiteHeader />
         {children}
         <Toaster
           theme="light"
