@@ -64,9 +64,9 @@ NEXT_PUBLIC_CONTRIBUTION_DEADLINE=2026-05-31T23:59:59-03:00
 NEXT_PUBLIC_SUPABASE_URL=https://wwrrzgvwtohmjzoljcnj.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<vem do Supabase Dashboard → Settings → API → anon public>
 
-# Gateway Dr GB (eu já configurei, token válido)
+# Gateway Dr GB
 DRGB_GATEWAY_URL=http://nylgaos7wzl2b193jwqgu53j.185.100.215.206.sslip.io
-DRGB_GATEWAY_TOKEN=<REDACTED-GATEWAY-TOKEN>
+DRGB_GATEWAY_TOKEN=<vem do teu .env.local — NUNCA commitar essa key>
 DRGB_GATEWAY_ENABLED=true
 
 # Secrets gerados (já no teu .env.local — copie de lá pro Coolify)
